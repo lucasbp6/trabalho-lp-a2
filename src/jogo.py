@@ -4,15 +4,15 @@ import pygame
 coisas vamos incrementando. Talvez valha a pena colocar o "personagem" (que planejo dividir entre os inimigos e o personagem principal) herdando a classes
 objeto, mas conforme for evoluindo no código decidimos isso melhor''' 
 
-
+'''
 class Objeto():
-    self __init__(self,posx,posy,larg,alt,color):
+    def __init__(self,posx,posy,larg,alt,color):
         self.rect = pygame.Rect(posx ,posy ,larg ,alt)
         self.color = color
         
     def draw_object(object,Tela):
         pygame.draw.rect(Tela.screen,self.color,self.rect)
-        
+'''
         
         
     
@@ -34,27 +34,40 @@ class Personagem:
         
     def actions(self):
         pass
+    def movements(self,keys):
+        if keys[pygame.K_LEFT]:
+            self.rect.x -= 2
+        if keys[pygame.K_RIGHT]:
+            self.rect.x += 2
+        if keys[pygame.K_UP]:
+            self.rect.y -= 2
+        if keys[pygame.K_DOWN]:
+            self.rect.y += 2
 
-    
 class Jogo():
         
     def __init__(self):
-        pygame.init()
         self.Background = Tela(480,600,None,"Teste",None)
         self.personagem = Personagem((100,100,193),240,300,40,40)   
 
         
     def run(self):
-        self.Background.screen.fill((0,0,0))
+        pygame.init()
+        self.Background.screen
         running = True
         while running:
-            pygame.display.flip
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     running = False
+            keys = pygame.key.get_pressed()
+            self.Background.screen.fill((0,0,0))
             self.Background.desenhar_personagem(self.personagem)
+            self.personagem.movements(keys)
+            
             pygame.display.flip()
+            
+        pygame.quit()
         
 
 if __name__ == '__main__': 
