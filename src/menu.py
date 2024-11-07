@@ -1,4 +1,7 @@
 import pygame
+import fase1 as f
+import sys
+import os
 
 LARGURA, ALTURA = 800, 600
 BLACK = (0,0,0)
@@ -44,22 +47,41 @@ class Text:
         return False
     
 def selecao_personagem(tela):
-    p1 = pygame.Rect(LARGURA/10, ALTURA/3, LARGURA/5, ALTURA/3)
-    p2 = pygame.Rect(4*LARGURA/10, ALTURA/3, LARGURA/5, ALTURA/3)
-    p3 = pygame.Rect(7*LARGURA/10, ALTURA/3, LARGURA/5, ALTURA/3)
+    p1_i = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"samyra.png")).convert_alpha()
+    p1 = pygame.transform.scale(p1_i, (LARGURA/5, ALTURA/3))
+
+    p2_i = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"lucas.png")).convert_alpha()
+    p2 = pygame.transform.scale(p2_i, (LARGURA/5, ALTURA/3))
+
+    p3_i = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"gabriel.png")).convert_alpha()
+    p3 = pygame.transform.scale(p3_i, (LARGURA/5, ALTURA/3))
+
+    #p1 = pygame.Rect(LARGURA/10, ALTURA/3, LARGURA/5, ALTURA/3)
+    #p2 = pygame.Rect(4*LARGURA/10, ALTURA/3, LARGURA/5, ALTURA/3)
+    #p3 = pygame.Rect(7*LARGURA/10, ALTURA/3, LARGURA/5, ALTURA/3)
     
-    pygame.draw.rect(tela, GREEN, p1)
-    pygame.draw.rect(tela, GREEN, p2)
-    pygame.draw.rect(tela, GREEN, p3)
+    #pygame.draw.rect(tela, GREEN, p1)
+    #pygame.draw.rect(tela, GREEN, p2)
+    #pygame.draw.rect(tela, GREEN, p3)
+    tela.blit(p1, (LARGURA/10, ALTURA/3))
+    tela.blit(p2, (4*LARGURA/10, ALTURA/3))
+    tela.blit(p3, (7*LARGURA/10, ALTURA/3))
 
 
 def novo_jogo(tela):
     titulo = Text("Escolha seu persongem",FONTE2, 80, WHITE, GREEN,  10)
     back = Text("Voltar",FONTE, ALTURA-35, WHITE, GREEN, 5, LARGURA - 100)
 
+    p1_i = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "samyra.png")).convert_alpha()
+    p1_r = pygame.transform.scale(p1_i, (LARGURA/5, ALTURA/3))
+    p2_i = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "lucas.png")).convert_alpha()
+    p2_r = pygame.transform.scale(p2_i, (LARGURA/5, ALTURA/3))
+    p3_i = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "gabriel.png")).convert_alpha()
+    p3_r = pygame.transform.scale(p3_i, (LARGURA/5, ALTURA/3))
     p1 = pygame.Rect(LARGURA/10, ALTURA/3, LARGURA/5, ALTURA/3)
     p2 = pygame.Rect(4*LARGURA/10, ALTURA/3, LARGURA/5, ALTURA/3)
     p3 = pygame.Rect(7*LARGURA/10, ALTURA/3, LARGURA/5, ALTURA/3)
+
     selection = True
     while selection:
         for event in pygame.event.get():
@@ -68,19 +90,22 @@ def novo_jogo(tela):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 click = event.pos
                 if p1.collidepoint(click):
+                    f.play(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "lucas.png"))
                     return 'p1'
                 if p2.collidepoint(click):
+                    f.play(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "samyra.png"))
                     return 'p2'
                 if p3.collidepoint(click):
+                    f.play(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "gabriel.png"))
                     return 'p3'
                 if back.on_click(click):
                     selection = False
         pos = pygame.mouse.get_pos() 
         tela.fill(BLACK)
     
-        pygame.draw.rect(tela, GREEN, p1)
-        pygame.draw.rect(tela, GREEN, p2)
-        pygame.draw.rect(tela, GREEN, p3)
+        tela.blit(p1_r, (4*LARGURA/10, ALTURA/3))
+        tela.blit(p2_r, (LARGURA/10, ALTURA/3))
+        tela.blit(p3_r, (7*LARGURA/10, ALTURA/3))
 
         back.on_contact(pos, tela)
         titulo.desenhar(tela)
@@ -103,7 +128,7 @@ def carregar(tela):
     erro_t = Text("Erro, codigo invalido", FONTE, ALTURA/2 + 100, WHITE, GREEN, 5)
     input = pygame.Rect(LARGURA/2 - 85, ALTURA/2 - 35, 170, 70)
     codigo = ''
-    ativo = False  # Inicialize 'ativo' aqui
+    ativo = False 
     carregando = True
     m_erro = False
     while carregando:
@@ -160,8 +185,9 @@ def carregar(tela):
     return
 
 def hub(tela):
+    fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "hub.jpeg"))
     running_hub = True
-    titulo = Text("Jogo feito pelo grupo", FONTE2, 110, WHITE, GREEN,  10)
+    #titulo = Text("Jogo feito pelo grupo", FONTE2, 110, WHITE, GREEN,  10)
     txt = Text("Novo jogo", FONTE, 275, WHITE, GREEN, 5)
     txt2 = Text("Carregar", FONTE, 325, WHITE, GREEN, 5)
     txt3 = Text("Sair", FONTE, 375, WHITE, GREEN, 5)
@@ -182,13 +208,13 @@ def hub(tela):
 
         pos = pygame.mouse.get_pos() 
 
-        tela.fill((0,0,0))
+        tela.blit(fundo,(0,0))
 
         txt.on_contact(pos, tela)
         txt2.on_contact(pos,tela)
         txt3.on_contact(pos,tela)
 
-        titulo.desenhar(tela)
+        #titulo.desenhar(tela)
         txt.desenhar(tela)
         txt2.desenhar(tela)
         txt3.desenhar(tela)
