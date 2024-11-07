@@ -1,0 +1,1 @@
+# Organizando modulo para definir as clases dos personagens
