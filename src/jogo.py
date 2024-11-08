@@ -1,24 +1,28 @@
 import pygame
 
 
-filepath = "..\data\labirinto"
+filepath = "..\data\mazejogo.png"
 
 class Labirinto:
     def __init__(self,filepath:str):
-        self.image = pygame.image(load)
+        self.image = pygame.image.load(filepath)
     
     def localizar_paredes(self):
         limites = []
         wall_color = (0,0,0)
         for y in range(self.image.get_height()):
-            for x in range(maze_image.get_width()):
+            for x in range(self.image.get_width()):
                 if self.image.get_at((x, y))[:3] == wall_color:
-                    parede = Objeto.(wall_color,x,y, 1, 1)
-                        limites.append(parede)
+                    parede = Objeto(wall_color,x,y, 3, 3)
+                    limites.append(parede)
+        return limites
 
+"""
+Define as paredes analisando a cor onde estão as cores pretas
+na imagem. Literalmente muito simples e símio da minha parte,
+não deve funcionar
 
-
-
+"""
 
 
 
@@ -83,12 +87,13 @@ class Jogo():
     def __init__(self):
         self.Background = Tela(800,600,None,"Teste")
         self.personagem = Personagem((100,100,193),0,0,32,32)
-        self.objeto = Objeto((30,240,40),40,40,80,80)
+        self.Labirinto = Labirinto(filepath)
 
         
     def run(self):
         pygame.init()
         self.Background.screen
+        wall_list = self.Labirinto.localizar_paredes() 
         running = True
         while running:
             for event in pygame.event.get():
@@ -96,11 +101,15 @@ class Jogo():
                     pygame.quit()
                     running = False
             keys = pygame.key.get_pressed()
-            self.Background.screen.fill((0,0,0))
+            self.Background.screen.fill((255,255,255))
             self.Background.desenhar_personagem(self.personagem)
             self.personagem.movements(keys)
-            self.Background.draw_object(self.objeto)
             
+            for wall in wall_list:
+                self.Background.draw_object(wall)
+            
+            clock = pygame.time.Clock()
+            clock.tick(30)
             pygame.display.flip()
             
         pygame.quit()
