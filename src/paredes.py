@@ -2,8 +2,8 @@ import pygame
 
 
 class Parede:
-    def __init__(self, x, y, altura, largura, cor):
-        self.rect = pygame.Rect(x,y,altura, largura)
+    def __init__(self, x, y, largura, altura, cor):
+        self.rect = pygame.Rect(x,y,largura, altura)
         self.cor = cor
     
 

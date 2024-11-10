@@ -12,9 +12,9 @@ WHITE = (255, 255, 255)
         
 def play(path):
     rodar = True
+    tela = pygame.display.set_mode((800, 600))
     teste = p.PersonagemTeste(5, 5, path)
     inimigo = p.Inimigo()
-    tela = pygame.display.set_mode((800, 600))
     clock = pygame.time.Clock()
 
     lista = pa.Paredes()
@@ -60,3 +60,6 @@ def play(path):
         pygame.display.flip()
 
     pygame.quit()
+
+if __name__ == "__main__":
+    play(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "lucas.png")) 

@@ -13,7 +13,7 @@ class PersonagemTeste:
 
     def movimento(self, botao):
 
-        if botao[pygame.K_d] and self.rect.x < 770:
+        if botao[pygame.K_d]:
             self.rect.x += 5
         if botao[pygame.K_a]:
             self.rect.x -= 5
@@ -21,7 +21,8 @@ class PersonagemTeste:
             self.rect.y -= 5
         if botao[pygame.K_s]:
             self.rect.y += 5
-        
+
+        return self.rect.center
 
     def colisao(self, parede, botao):
         # Guardar a posição original antes de mover
