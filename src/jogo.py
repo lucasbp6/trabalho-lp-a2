@@ -1,7 +1,8 @@
 import pygame
+from sys import exit
 
 
-filepath = "..\data\mazejogo.png"
+filepath = "..\data\labirintodiminuido.png"
 
 class Labirinto:
     def __init__(self,filepath:str):
@@ -13,7 +14,7 @@ class Labirinto:
         for y in range(self.image.get_height()):
             for x in range(self.image.get_width()):
                 if self.image.get_at((x, y))[:3] == wall_color:
-                    parede = Objeto(wall_color,x,y, 3, 3)
+                    parede = Objeto(wall_color,x,y, 1, 1)
                     limites.append(parede)
         return limites
 
@@ -86,7 +87,7 @@ class Jogo():
         
     def __init__(self):
         self.Background = Tela(800,600,None,"Teste")
-        self.personagem = Personagem((100,100,193),0,0,32,32)
+        self.personagem = Personagem((100,100,193),10,20,32,32)
         self.Labirinto = Labirinto(filepath)
 
         
@@ -94,12 +95,11 @@ class Jogo():
         pygame.init()
         self.Background.screen
         wall_list = self.Labirinto.localizar_paredes() 
-        running = True
-        while running:
+        while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    running = False
+                    exit()
             keys = pygame.key.get_pressed()
             self.Background.screen.fill((255,255,255))
             self.Background.desenhar_personagem(self.personagem)
@@ -115,7 +115,7 @@ class Jogo():
         pygame.quit()
 
 """
-Essa classe representa o jogo rodando
+Essa classe representa o jogo rodando, obviamente.
 """
 if __name__ == '__main__': 
     jojo = Jogo()
