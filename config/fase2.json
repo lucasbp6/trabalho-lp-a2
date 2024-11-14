@@ -15,7 +15,11 @@
         {"x": 795, "y": 0, "largura": 5, "altura": 260},
         {"x": 795, "y": 340, "largura": 5, "altura": 260},
         {"x": 788, "y": 255, "largura": 7, "altura": 5},
-        {"x": 788, "y": 340, "largura": 7, "altura": 5}
+        {"x": 788, "y": 340, "largura": 7, "altura": 5},
+        {"x": 500, "y": 150, "largura": 50, "altura": 50},
+        {"x": 250, "y": 150, "largura": 50, "altura": 50},
+        {"x": 500, "y": 400, "largura": 50, "altura": 50},
+        {"x": 250, "y": 400, "largura": 50, "altura": 50}
     ],
     "porta1_1": [
         {"x": 0, "y": 595, "largura": 340, "altura": 5},
@@ -83,6 +87,7 @@
         {"x": 0, "y": 595, "largura": 800, "altura": 5},
         {"x": 0, "y": 0, "largura": 5, "altura": 600},
         {"x": 795, "y": 0, "largura": 5, "altura": 500},
+        {"x": 350, "y": 190, "largura": 100, "altura": 10},
         {"x": 200, "y": 0, "largura": 10, "altura": 200},
         {"x": 590, "y": 0, "largura": 10, "altura": 200},
         {"x": 200, "y": 190, "largura": 150, "altura": 10},
@@ -98,6 +103,9 @@
         {"x": 0, "y": 0, "largura": 5, "altura": 500},
         {"x": 795, "y": 0, "largura": 5, "altura": 600},
         {"x": 0, "y": 595, "largura": 800, "altura": 5},
+        {"x": 300, "y": 410, "largura": 10, "altura": 185},
+        {"x": 450, "y": 410, "largura": 10, "altura": 185},
+        {"x": 600, "y": 410, "largura": 10, "altura": 185},
         {"x": 0, "y": 400, "largura": 650, "altura": 10},
         {"x": 650, "y": 200, "largura": 10, "altura": 210},
         {"x": 150, "y": 200, "largura": 500, "altura": 10}
