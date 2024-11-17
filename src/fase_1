@@ -1,32 +1,28 @@
 import pygame
 from sys import exit
+import json
+import os
 
-
-filepath = "..\data\labirintodiminuido.png"
-
-class Labirinto:
-    def __init__(self,filepath:str):
-        self.image = pygame.image.load(filepath)
-    
-    def localizar_paredes(self):
-        limites = []
-        wall_color = (0,0,0)
-        for y in range(self.image.get_height()):
-            for x in range(self.image.get_width()):
-                if self.image.get_at((x, y))[:3] == wall_color:
-                    parede = Objeto(wall_color,x,y, 1, 1)
-                    limites.append(parede)
-        return limites
-
-"""
-Define as paredes analisando a cor onde estão as cores pretas
-na imagem. Literalmente muito simples e símio da minha parte,
-não deve funcionar
-
-"""
+filepath = os.path.join("..", "data", "fase1_paredes.json")
 
 
 
+def data_loader(caminho:str):
+    with open(caminho,"r") as file:
+        data = json.load(file)
+    return data
+
+class Paredes:
+    def __init__(self,color:tuple,dados:str):
+        self.walls = dados
+        self.cor = color
+        
+    def get_walls(self):
+        wall_list = []
+        for wall in self.walls:
+            parede = Objeto(self.cor, wall["x"], wall["y"], wall["width"], wall["height"])
+            wall_list.append(parede)
+        return wall_list
 
 
 class Objeto:
@@ -61,21 +57,24 @@ tela de loading.
 
 
 class Personagem:
-    def __init__(self,color,x, y, width = 40, height = 40):
+    def __init__(self,color,x, y,speed_x,speed_y, width = 40, height = 40):
         self.color = color
         self.rect = pygame.Rect(x,y,width,height)
+        self.vel_x = speed_x
+        self.vel_y = speed_y
         
     def actions(self):
         pass
+        
     def movements(self,keys):
         if keys[pygame.K_LEFT]:
-            self.rect.x -= 2
+            self.rect.x -= self.vel_x
         if keys[pygame.K_RIGHT]:
-            self.rect.x += 2
+            self.rect.x += self.vel_x
         if keys[pygame.K_UP]:
-            self.rect.y -= 2
+            self.rect.y -= self.vel_y
         if keys[pygame.K_DOWN]:
-            self.rect.y += 2
+            self.rect.y += self.vel_y
 """
 Essa classe representa o personagem jogável.
  Já introduzi a movimentação.
@@ -87,14 +86,14 @@ class Jogo():
         
     def __init__(self):
         self.Background = Tela(800,600,None,"Teste")
-        self.personagem = Personagem((100,100,193),10,20,32,32)
-        self.Labirinto = Labirinto(filepath)
+        self.personagem = Personagem((100,100,193),10,20,3,3,50,50)
+        self.Paredes = Paredes((0,0,0),data_loader(filepath))
 
         
     def run(self):
         pygame.init()
         self.Background.screen
-        wall_list = self.Labirinto.localizar_paredes() 
+        walls = self.Paredes.get_walls()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -105,7 +104,8 @@ class Jogo():
             self.Background.desenhar_personagem(self.personagem)
             self.personagem.movements(keys)
             
-            for wall in wall_list:
+            
+            for wall in walls:
                 self.Background.draw_object(wall)
             
             clock = pygame.time.Clock()
