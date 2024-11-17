@@ -26,10 +26,10 @@ class Jogo:
                     executando = False
 
             teclas = pygame.key.get_pressed()
-            self.personagem.atualizar(teclas)
+            self.personagem.atualizar(teclas, self.paredes)
             
-            if pygame.sprite.spritecollide(self.personagem, self.paredes, False):
-                print("Colisão detectada!")
+            if not self.personagem.colisao_parede(self.paredes):
+                print("colisão detectada")
 
             self.tela.fill(COR_FUNDO)
             self.todas_sprites.draw(self.tela)
