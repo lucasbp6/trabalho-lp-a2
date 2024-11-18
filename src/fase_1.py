@@ -1,6 +1,7 @@
 import pygame
 from sys import exit
 from load_json import data_loader
+import json
 import os
 
 filepath = os.path.join("..", "data", "fase1_paredes.json")
@@ -17,18 +18,38 @@ Carrega dados de um arquivo json
 
 
 class Paredes:
-    def __init__(self,color:tuple,dados:str):
-        self.walls = dados
-        self.cor = color
-        
-    def get_walls(self):
-        wall_list = []
-        for wall in self.walls:
-            parede = Objeto(self.cor, wall["x"], wall["y"], wall["width"], wall["height"])
-            wall_list.append(parede)
-        return wall_list
-        
-        
+    def __init__(self):
+        self.paredes = []
+        self.limites = []
+        self.dados = None
+
+    def load(self, path):
+        with open(path, 'r') as arquivo:
+            print(path)
+            dados = json.load(arquivo)
+        self.dados = dados
+
+    def ativar(self, chave):
+        self.paredes = []
+        print(chave)
+        print(type(self.dados))
+        print(self.dados)
+        if self.dados == None:
+            raise TypeError("Nao ha dados carregados")
+        paredes = self.dados[chave]["paredes"]
+        print(paredes)
+        for i in range(len(paredes)):
+            print(paredes[i])
+            rect = pygame.Rect(paredes[i]['x'], paredes[i]['y'], paredes[i]['largura'], paredes[i]['altura'])
+            print('sim')
+            self.paredes.append(rect)
+        self.limites = self.dados[chave]["limites"]
+        print(self.limites)
+
+
+    def draw(self, tela):
+        for parede in self.paredes:
+            pygame.draw.rect(tela, (255,155,243), parede)  
         
 
 
@@ -39,9 +60,9 @@ class Objeto:
         
     def on_collision(self,personagem):
         if self.rect.colliderect(personagem.rect):
-            if self.rect.topleft[0] = personagem.rect.x:
+            if self.rect.topleft[0] == personagem.rect.x:
                 personagem.rect.right = self.rect.left
-            elif self.rect.topleft[1] = personagem.rect.y:
+            elif self.rect.topleft[1] == personagem.rect.y:
                 personagem.rect.bottom = self.rect.top
 
 

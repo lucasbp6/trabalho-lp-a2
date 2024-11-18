@@ -10,6 +10,7 @@ GREEN = (0,255,0)
 FONTE = pygame.font.SysFont('arial', 30, False, False)
 FONTE2 = pygame.font.SysFont('arial', 70, False, False)
 
+
 class Text:
     def __init__(self, texto, fonte, x, y, cor, game, cor_caixa = None):
         self.tela = game.tela

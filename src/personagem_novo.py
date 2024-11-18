@@ -6,6 +6,7 @@ class Balas:
     def __init__(self):
         self.balas = []
 
+    # Verifica a colisao entre cada um dos objetos com o tiro
     def colisao(self, paredes, bala, inimigos, v = False):
         rect = pygame.Rect(bala.pos[0]-bala.raio, bala.pos[1]-bala.raio, 2*bala.raio, 2*bala.raio)
         for parede in paredes:
@@ -112,6 +113,8 @@ class Personagem(pygame.sprite.Sprite):
         tela.blit(self.image, self.rect)
     
     def colisao_perso(self, personagens):
+        if personagens == None:
+            return
         for personagem in personagens.inimigos:
             if self.rect.colliderect(personagem.rect):
                 return True
@@ -204,7 +207,7 @@ class Perso_controle(Personagem):
             self.imortal += 1
         if self.vida == 0:
             return 'a'
-        print('vida:', self.vida, 'coletou:', self.coletou)
+        #print('vida:', self.vida, 'coletou:', self.coletou)
         
     
 class Inimigos:
