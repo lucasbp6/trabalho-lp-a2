@@ -2,6 +2,7 @@ import pygame
 import fase_1 as f1
 import personagem_novo as personagem
 import os
+import boss
 
 # carregas os enderecos dos json das fases
 class Fases:
@@ -13,7 +14,7 @@ class Fases:
             "fase2": os.path.join("..", "config", "fase2.json"),
             "fase3": os.path.join("..", "data", "fase1_paredes.json"),
             "fase4": os.path.join("..", "data", "fase1_paredes.json"),
-            "fase5": os.path.join("..", "data", "fase1_paredes.json")
+            "fase5": os.path.join("..","config", "fase5.json")
         }
         self.seletor = self.fases['fase2']
         self.quadro = 'hub'
@@ -30,6 +31,7 @@ class Fases:
             self.mapa.load(self.seletor)
             self.troca = False
         print('load')
+        self.inimigos.add(boss.Boss("../assets/samyra.png", 350, 50, 100,100, 10, 'boss1', ))
         self.mapa.ativar(self.quadro)
         self.load = True
 
@@ -60,10 +62,12 @@ class Fases:
 
     def run(self):
         if self.personagem == False:
-            self.personagem = personagem.Perso_controle(self.game.path, 10,10,50,50, 5)
+            self.personagem = personagem.Perso_controle(self.game.path, 375,500,50,50, 5)
         if not self.load:
             self.load_mapa()
         self.tela.fill((0,0,0))
-        self.mapa.draw(self.game.tela)
+        self.inimigos.update(self.tela, self.mapa.paredes, self.personagem, True)
         self.personagem.update(self.tela, self.mapa.paredes, self.inimigos)
+        print(self.personagem.vida)
+        self.mapa.draw(self.game.tela)
         self.limites()
