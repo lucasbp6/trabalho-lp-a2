@@ -11,17 +11,26 @@ class Balas:
         rect = pygame.Rect(bala.pos[0]-bala.raio, bala.pos[1]-bala.raio, 2*bala.raio, 2*bala.raio)
         for parede in paredes:
             if parede.colliderect(rect):
-                self.balas.remove(bala)
+                try:
+                    self.balas.remove(bala)
+                except:
+                    pass
         if v == True:        
             for inimigo in inimigos.inimigos:
                 if inimigo.rect.colliderect(rect):
                     inimigo.vida -= 1
-                    self.balas.remove(bala)
+                    try:
+                        self.balas.remove(bala)
+                    except:
+                        pass
         
         else:
             if inimigos.rect.colliderect(rect):
                     inimigos.vida -= 1
-                    self.balas.remove(bala)
+                    try:
+                        self.balas.remove(bala)
+                    except:
+                        pass
 
 
     def add(self, bala):
@@ -160,6 +169,42 @@ class Personagem(pygame.sprite.Sprite):
             self.vetor = vetor
 
         return vetor
+    #teste
+    import math
+
+    def direcao_mouse(self, mouse_x, mouse_y):
+    # Calcula o vetor do centro até o clique do mouse
+        delta_x = mouse_x - self.rect.center[0]
+        delta_y = mouse_y - self.rect.center[1]
+        
+        # Calcula o ângulo em relação ao eixo X (convertido para graus)
+        angulo = math.degrees(math.atan2(-delta_y, delta_x))  # Invertendo delta_y porque o eixo Y cresce para baixo no Pygame
+        if angulo < 0:
+            angulo += 360  # Ajusta ângulo para ser sempre positivo (0 a 360)
+
+        # Define os setores (cada 45° é um setor)
+        if 0 <= angulo < 22.5 or 315 <= angulo < 376.5:
+            vetor = [1, 0]  # Direita
+        elif 22.5 <= angulo < 67.5:
+            vetor = [1, -1]  # Cima-direita
+        elif 67.5 <= angulo < 112.5:
+            vetor = [0, -1]  # Cima
+        elif 112.5 <= angulo < 157.5:
+            vetor = [-1, -1]  # Cima-esquerda
+        elif 157.5 <= angulo < 202.5:
+            vetor = [-1, 0]  # Esquerda
+        elif 202.5 <= angulo < 247.5:
+            vetor = [-1, 1]  # Baixo-esquerda
+        elif 247.5 <= angulo < 292.5:
+            vetor = [0, 1]  # Baixo
+        else:
+            vetor = [1, 1]  # Baixo-direita
+        
+        # Atualiza o vetor da classe
+        self.vetor = vetor
+        return vetor
+
+    
     def update(self,tela, paredes):
         self.movimento(paredes)
         self.draw(tela)
@@ -183,13 +228,15 @@ class Perso_controle(Personagem):
             delta_y -= 5
         if teclas[pygame.K_s] or teclas[pygame.K_DOWN]:
             delta_y += 5
-        if teclas[pygame.K_SPACE] and self.stamina <= 0:
+        if teclas[pygame.K_SPACE]  and self.stamina <= 0:
             self.tiro()
-        
         self.movimento(delta_x, delta_y, paredes)
 
     def tiro(self):
         x, y = self.vetor
+        #para testes
+        x,y = pygame.mouse.get_pos()
+        x,y = self.direcao_mouse(x,y)
         self.tiros.add(Bala(self.rect, x, y, 7))
         self.stamina = 40
   
