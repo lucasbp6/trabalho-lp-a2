@@ -16,7 +16,7 @@ class Menu:
     def __init__(self, game):
         self.game = game
         self.objetos = []
-        self.personagens = [menu.SelectPlayer("assets", "samyra.png", 2, self.game), menu.SelectPlayer("assets", "lucas.png", 1, self.game), menu.SelectPlayer("assets", "gabriel.png",3, self.game)]
+        self.personagens = [menu.SelectPlayer("assets","personagem", "samyra.png", 2, self.game), menu.SelectPlayer("assets","personagem", "lucas.png", 1, self.game), menu.SelectPlayer("assets","personagem", "gabriel.png",3, self.game)]
         self.estados = {
             "hub": self.hub,
             "Novo jogo": self.novo_jogo,
@@ -59,7 +59,7 @@ class Menu:
         if self.troca == True:
             self.objetos = [menu.Text("Novo jogo", FONTE,0,  275, WHITE, self.game, GREEN),menu.Text("Carregar", FONTE,0, 325, WHITE,  self.game, GREEN), menu.Text("Sair", FONTE, 0,375, WHITE, self.game, GREEN)]
             self.troca = False
-        fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "hub.jpeg"))
+        fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "principal", "hub.jpeg"))
         self.game.tela.blit(fundo,(0,0))
 
     #renderiza as imagens do jogadores para escolher    
