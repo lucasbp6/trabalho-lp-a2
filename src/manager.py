@@ -17,7 +17,7 @@ class Manager:
             "fase5": os.path.join("..","config", "fase5.json")
         }
         # Seletor padrao = fase1
-        self.seletor = self.fases['fase5']
+        self.seletor = self.fases['fase2']
         self.troca = True
         self.quadro = 'hub'
         self.load = False

@@ -16,7 +16,7 @@ class Menu:
     def __init__(self, game):
         self.game = game
         self.objetos = []
-        self.personagens = [menu.SelectPlayer("assets","personagem", "samyra.png", 2, self.game), menu.SelectPlayer("assets","personagem", "lucas.png", 1, self.game), menu.SelectPlayer("assets","personagem", "gabriel.png",3, self.game)]
+        self.personagens = [menu.SelectPlayer("assets","personagens", "samyra.png", 2, self.game), menu.SelectPlayer("assets","personagens", "lucas.png", 1, self.game), menu.SelectPlayer("assets","personagens", "gabriel.png",3, self.game)]
         self.estados = {
             "hub": self.hub,
             "Novo jogo": self.novo_jogo,
