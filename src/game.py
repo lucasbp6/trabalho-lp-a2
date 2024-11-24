@@ -1,5 +1,5 @@
 import pygame
-import modulos as menu
+import ui_menu as menu
 import manager
 import sys
 import os
