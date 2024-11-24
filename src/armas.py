@@ -74,4 +74,6 @@ class Bala:
         self.contador -= 1
         self.pos = (self.pos[0] + self.sentido[0]*10, self.pos[1]+ self.sentido[1]*10)
         return self.contador
+
+
     

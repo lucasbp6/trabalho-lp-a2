@@ -69,10 +69,12 @@ class Personagem(pygame.sprite.Sprite):
             self.vetor = vetor
 
         return vetor
+    
+    
     #teste
-    import math
 
-    #Verifica a direção do mouse em relacao ao personagem
+
+    '''   #Verifica a direção do mouse em relacao ao personagem
     def direcao_mouse(self, mouse_x, mouse_y):
     # Calcula o vetor do centro até o clique do mouse
         delta_x = mouse_x - self.rect.center[0]
@@ -104,6 +106,15 @@ class Personagem(pygame.sprite.Sprite):
         # Atualiza o vetor da classe
         self.vetor = vetor
         return vetor
+    '''
+
+    #Verifica a direção do mouse em relacao ao personagem
+    def direcao_mouse(self, mouse_x, mouse_y):
+        angle = math.atan2(mouse_x - self.rect.y, mouse_y - self.rect.x)
+        direção_x = math.cos(angle) 
+        direção_y = math.sin(angle) 
+        self.vetor = (direção_x,direção_y)
+        return self.vetor
 
     
     def update(self,tela, paredes):

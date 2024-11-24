@@ -24,6 +24,7 @@ class Mapa:
         
         #carrega as paredes do mapa
         self.paredes = []
+        print(self.dados[chave])
         paredes = self.dados[chave]["paredes"]
         for i in range(len(paredes)):
             rect = pygame.Rect(paredes[i]['x'], paredes[i]['y'], paredes[i]['largura'], paredes[i]['altura'])
