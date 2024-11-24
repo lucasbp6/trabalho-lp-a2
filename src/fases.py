@@ -33,8 +33,8 @@ class Fases:
             
             self.troca = False
         print('load')
-        #self.inimigos.add(boss.Boss("../assets/samyra.png",350, 50, 100,100, 1, 'boss2', ))
-        #self.inimigos.add(personagem.Inimigo("../assets/samyra.png", 350, 50, 50, 50, 3, "aleatorio"))
+        #self.inimigos.add(boss.Boss("../assets/personagens/samyra.png",350, 50, 100,100, 1, 'boss2', ))
+        #self.inimigos.add(personagem.Inimigo("../assets/personagens/samyra.png", 350, 50, 50, 50, 3, "aleatorio"))
         self.mapa.ativar(self.quadro)
         self.inimigos.clean()
         for nimigo in self.mapa.npc:
@@ -76,11 +76,11 @@ class Fases:
         self.inimigos.update(self.tela, self.mapa.paredes, self.personagem, True)
         '''if self.inimigos.update(self.tela, self.mapa.paredes, self.personagem, True):
             if self.round == 2:
-                self.inimigos.add(boss.Boss("../assets/samyra.png", 350, 50, 50,50, 1, 'boss3', ))
-                self.inimigos.add(boss.Boss("../assets/samyra.png", 350, 50, 50,50, 1, 'boss3', ))
+                self.inimigos.add(boss.Boss("../assets/personagens/samyra.png", 350, 50, 50,50, 1, 'boss3', ))
+                self.inimigos.add(boss.Boss("../assets/personagens/samyra.png", 350, 50, 50,50, 1, 'boss3', ))
             if self.round == 1:
-                self.inimigos.add(boss.Boss("../assets/samyra.png", 350, 50, 70,70, 1, 'boss2', ))
-                self.inimigos.add(boss.Boss("../assets/samyra.png", 350, 50, 70,70, 1, 'boss2', ))
+                self.inimigos.add(boss.Boss("../assets/personagens/samyra.png", 350, 50, 70,70, 1, 'boss2', ))
+                self.inimigos.add(boss.Boss("../assets/personagens/samyra.png", 350, 50, 70,70, 1, 'boss2', ))
                 self.round = 2'''
 
 
