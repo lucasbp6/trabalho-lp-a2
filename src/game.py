@@ -1,6 +1,6 @@
 import pygame
 import modulos as menu
-import fases
+import manager
 import sys
 import os
 
@@ -118,10 +118,10 @@ class Game:
         self.clock = pygame.time.Clock()
         self.rodando = True
         self.estados = {
-            "menu": Menu(self),
-            "fase": fases.Fases(self)
+            "menu": Menu,
+            "fase": manager.Manager
         }
-        self.atual = self.estados["menu"]
+        self.atual = self.estados["menu"](self)
         self.eventos = []
         self.personagem = []
         self.path = ''
@@ -129,7 +129,7 @@ class Game:
     #troca entre o menu e as fases do jogo
     def seletor(self, fase):
         print("seletor")
-        self.atual = self.estados[fase]
+        self.atual = self.estados[fase](self)
 
     #loop principal do jogo, coleta os principais eventos
     def iniciar(self):

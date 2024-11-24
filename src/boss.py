@@ -1,7 +1,12 @@
 import pygame
 import math
-import personagem_novo as personagem
+import personagem
 import random
+
+
+''' CONTEM MUITAS COPIAS DA CLASSE INIMIGOS, PORÉM A IDEIA PRINCIPAL É SER UMA CLASSE FILHO DE INIMIGOS
+    NESSA CLASSE DEVEM TER OS DIVERSOS ATAQUES QUE OS BOSSES TERÃO E SUAS LOGICAS DE MOVIMENTO
+    '''
 
 class Boss(personagem.Personagem):
     def __init__(self, path, x, y, largura, altura,vida,  sentido):
@@ -235,6 +240,8 @@ class Boss(personagem.Personagem):
 
         print(f"Raio Atual: {self.raio_atual}, Expansão: {self.expansao}, Ângulo Base: {self.angulo_base}")
 
+    def algo(self):
+        pass
 
     def update(self,tela, paredes, controlavel = None, v = False):
         self.tiros.update(tela, paredes, controlavel, v)
@@ -243,4 +250,5 @@ class Boss(personagem.Personagem):
         '''if self.ataque_atual == False:
             self.ataque_atual = self.ataque[random.randint(1,3)]
         self.ataque_atual(tela)'''
+        self.algo()
         
