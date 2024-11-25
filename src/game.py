@@ -1,6 +1,6 @@
 import pygame
-import modulos as menu
-import fase2 as f2
+import ui_menu as menu
+import manager
 import sys
 import os
 
@@ -12,6 +12,7 @@ FONTE = pygame.font.SysFont('arial', 30, False, False)
 FONTE2 = pygame.font.SysFont('arial', 70, False, False)
 
 class Menu:
+    #ja tem na memoria os botoes dos personagens e tem os objetos vazios para trocar de tela no menu
     def __init__(self, game):
         self.game = game
         self.objetos = []
@@ -27,19 +28,23 @@ class Menu:
         self.troca = True
         self.codigo = ''
 
+    # verifica todos eventos que acontecem no menu
     def eventos(self):
         click_pos = None
         for evento in self.game.eventos:
                 if evento.type == pygame.MOUSEBUTTONDOWN:
                     click_pos = evento.pos
         pos = pygame.mouse.get_pos()
-
+        #na tela de novo jogo, as funções que representam as imagens do personagem retornam o endereço deles quando clicadas
         if self.atual == self.novo_jogo :
             for personagem in self.personagens:
                 r = personagem.update(pos, click_pos)
                 if r != None:
                     print(r)
-        
+                    #define o path do personagem e troca o seletor do game para a classe responsavel pelas fases
+                    self.game.path = r
+                    self.game.seletor('fase')
+        #caso click troca entre as telas do menu
         for objeto in self.objetos:
             a = objeto.update(pos, click_pos)
             if a in self.estados:
@@ -48,30 +53,23 @@ class Menu:
             if a == "Enviar":
                 self.verifica_codigo()
 
-        
+    #primeiro contato do usuario com o menu   
     def hub(self):
+        # se acabou de abrir essa funcao, carrega os objetos dela mesma
         if self.troca == True:
             self.objetos = [menu.Text("Novo jogo", FONTE,0,  275, WHITE, self.game, GREEN),menu.Text("Carregar", FONTE,0, 325, WHITE,  self.game, GREEN), menu.Text("Sair", FONTE, 0,375, WHITE, self.game, GREEN)]
-<<<<<<< HEAD:branch_samyra_arquivos_antigos/src/game.py
-            self.contador = False
-        fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "hub.jpeg"))
-=======
             self.troca = False
         fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "principal", "hub.jpeg"))
->>>>>>> dev:src/game.py
         self.game.tela.blit(fundo,(0,0))
-        #verificar se é melhor colocar assim ou carregar os objetos apenas aqui
 
-        self.eventos()
-
+    #renderiza as imagens do jogadores para escolher    
     def novo_jogo(self):
         if self.troca == True:
             self.objetos = [menu.Text("Escolha seu persongem",FONTE2, 80,10,  WHITE,self.game),menu.Text("Voltar",FONTE, LARGURA - 100,ALTURA-35, WHITE,  self.game, GREEN)]
             self.contador = False
         self.game.tela.fill(BLACK)
-        self.eventos()
-
-
+        
+    #funcao em desenvolvimento para um futuro, caso de tempo
     def verifica_codigo(self):
         print("entrei")
         if self.codigo == "1111":
@@ -83,7 +81,7 @@ class Menu:
         return
 
 
-######### arrumar a função carregar
+######### em desenvolvimento para salvar o jogo
     def carregar(self):
         if self.troca == True:
             self.objetos = [menu.Text("Digite o codigo:", FONTE2, 0, 120, WHITE, self.game), menu.Text("Voltar", FONTE,0,  ALTURA-35, WHITE, self.game, GREEN),
@@ -105,10 +103,13 @@ class Menu:
         codigo_render = FONTE2.render(self.codigo, True, WHITE)
         self.game.tela.blit(codigo_render, (input.x + 5, input.y + 5))
         pygame.draw.rect(self.game.tela, GREEN, input, 2)
-        self.eventos()
 
+    #roda o loop atual
     def run(self):
         self.atual()
+        #verifica todos eventos, inclusive o de troca de cores
+        self.eventos()
+
 
 class Game:
     def __init__(self):
@@ -117,15 +118,20 @@ class Game:
         self.clock = pygame.time.Clock()
         self.rodando = True
         self.estados = {
-            "menu": Menu(self)
+            "menu": Menu,
+            "fase": manager.Manager
         }
-        self.atual = self.estados["menu"]
+        self.atual = self.estados["menu"](self)
         self.eventos = []
         self.personagem = []
+        self.path = ''
 
+    #troca entre o menu e as fases do jogo
     def seletor(self, fase):
-        self.atual = self.estados[fase]
+        print("seletor")
+        self.atual = self.estados[fase](self)
 
+    #loop principal do jogo, coleta os principais eventos
     def iniciar(self):
         while self.rodando:
             self.clock.tick(60)
@@ -136,8 +142,7 @@ class Game:
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_ESCAPE:
                         self.rodando = False
-            #teste de criacao
-            self.seletor("menu")
+            #chama a fncao atual para modificar a tela
             self.atual.run()
 
             pygame.display.flip()
