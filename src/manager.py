@@ -10,18 +10,18 @@ class Manager:
         self.tela = game.tela
         # Organizar os enderecos corretos
         self.fases = {
-            "fase1": os.path.join("..", "data", "fase1_paredes.json"),
+            "fase1": os.path.join("..", "config", "fase1.json"),
             "fase2": os.path.join("..", "config", "fase2.json"),
-            "fase3": os.path.join("..", "data", "fase1_paredes.json"),
-            "fase4": os.path.join("..", "data", "fase1_paredes.json"),
+            "fase3": os.path.join("..", "config", "fase3.json"),
+            "fase4": os.path.join("..", "config", "fase4.json"),
             "fase5": os.path.join("..","config", "fase5.json")
         }
         # Seletor padrao = fase1
-        self.seletor = self.fases['fase2']
+        self.seletor = self.fases['fase1']
         self.troca = True
         self.quadro = 'hub'
         self.load = False
-        self.personagem = personagem.Perso_controle(game.path, 375,275,50,50,5) # posicoes rever
+        self.personagem = personagem.Perso_controle(game.path, 25,25,50,50,5) # posicoes rever
         self.inimigos = personagem.Inimigos()
         self.mapa = mapa.Mapa()
 
@@ -44,8 +44,8 @@ class Manager:
 
         #carrega os inimigos
         self.inimigos.clean()
-        for nimigo in self.mapa.npc:
-            self.inimigos.add(personagem.Inimigo(nimigo[0], nimigo[1], nimigo[2], nimigo[3], nimigo[4], nimigo[5], nimigo[6]))   
+        for inimigo in self.mapa.npc:
+            self.inimigos.add(inimigo)   
         self.load = True
 
     #verifica qual o proximo quadro

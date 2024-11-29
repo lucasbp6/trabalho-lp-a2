@@ -1,5 +1,6 @@
 import pygame
 import json
+import personagem as per
 
 
 class Mapa:
@@ -34,13 +35,10 @@ class Mapa:
         
         #carrega os inimigos do mapa
         self.npc = []
-        for inimigos in self.dados[chave]["inimigos"]:
-            if len(inimigos) != 0:
-                #verifica se o inimigo ja foi morto 'f'
-                if inimigos[7] == "t":
-                    self.npc.append([inimigos[0], inimigos[1], inimigos[2], inimigos[3], inimigos[4], inimigos[5], inimigos[6]])
-
-
+        for inimigo in self.dados[chave]["inimigos"]:
+            if len(inimigo) != 0:
+                self.npc.append(per.Inimigo(inimigo['path'],inimigo['x'],inimigo['y'],inimigo['largura'],inimigo['altura'],inimigo['vida'],inimigo['sentido']))
+        
     '''REMOVER QUANDO TERMINAR DE USAR'''
     #apenas para visualizacao do mapa
     def draw(self, tela):

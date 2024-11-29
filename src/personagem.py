@@ -195,6 +195,7 @@ class Inimigo(Personagem):
         self.stamina = 40
         self.timer_aleatorio = 0
 
+    
     #verifica a diferença entre o inimigo em relacao ao player
     """CHANCES DE SER REMOVIDA CASO NAO NECESSARIO"""
     def delta(self, controlavel):
@@ -260,7 +261,7 @@ class Inimigo(Personagem):
 
         return False
 
-    #cira um tiro para os inimigos
+    #cria um tiro para os inimigos
     def tiro(self, paredes, controlavel):
   
         if self.linha_colide_com_paredes(paredes, controlavel):
@@ -283,7 +284,6 @@ class Inimigo(Personagem):
 
     #dentre os varios tipos de movimentos, ele realiza de acordo com o parametro
     def movimento(self, paredes, controlavel = None):
-
         delta_x, delta_y = 0,0
         if self.sentido == 'x':
             delta_x = self.velocidade*self.multiplicador
@@ -364,15 +364,22 @@ class Inimigo(Personagem):
                 self.tiro(paredes, controlavel)
             if self.stamina > 0:
                 self.stamina -= 1
-      
 
         if self.sentido == 'atirador' and self.stamina <= 0:
             self.tiro(paredes, controlavel)
         if self.stamina > 0:
             self.stamina -= 1
-
-
-
+        
+        if self.sentido == 'caminhante':
+            i = 1
+            lenght = len(self.pontos)
+            while True:
+                self.walk_through(self.pontos[i-1],self.pontos[i])
+                if i%lenght == 0:
+                    self.pontos = self.pontos.reverse()
+                else:
+                    i +=1
+            
         self.direcao(delta_x, delta_y)
 
     def update(self,tela, paredes, controlavel = None, v = False):

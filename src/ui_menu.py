@@ -41,7 +41,7 @@ class Text:
         self.desenhar()
         return self.on_click(mouse_click)
     
-#blocos de imagem para selecai de personagens
+#blocos de imagem para selecao de personagens
 class SelectPlayer:
 
     def __init__(self, folder,folder2, archive, num, game):
