@@ -18,14 +18,15 @@ class Manager:
         self.fases = {
             "fase1": os.path.join("..", "data", "fase1_paredes.json"),
             "fase2": os.path.join("..", "config", "fase2.json"),
-            "fase3": os.path.join("..", "data", "fase1_paredes.json"),
+            "fase3": os.path.join("..", "config", "fase3.json"),
             "fase4": os.path.join("..", "data", "fase1_paredes.json"),
             "fase5": os.path.join("..","config", "fase5.json")
         }
         # Seletor padrao = fase1
-        self.seletor = self.fases['fase2']
+        self.seletor = self.fases['fase3']
         self.troca = True
         self.quadro = 'hub'
+        self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "fase3", "fase3_desenho", f"{self.quadro}.png"))
         self.load = False
         self.personagem = personagem.Perso_controle(game.path, 375,275,50,50,5) # posicoes rever
         self.inimigos = personagem.Inimigos()
@@ -56,10 +57,10 @@ class Manager:
         for nimigo in self.mapa.npc:
             self.inimigos.add(personagem.Inimigo(nimigo[0], nimigo[1], nimigo[2], nimigo[3], nimigo[4], nimigo[5], nimigo[6]))   
         self.load = True
-        self.coletaveis.add("../assets/personagens/samyra.png", 400, 200, 20, 20)
-        self.coletaveis.add("../assets/personagens/samyra.png", 400, 400, 20, 20)
-        self.coletaveis.add("../assets/personagens/samyra.png", 400, 500, 20, 20)
-        self.coletaveis.add("../assets/personagens/samyra.png", 400, 100, 20, 20)
+
+        self.coletaveis = interagiveis.Coletavel()
+        for coletaveis in self.mapa.coletaveis:
+            self.coletaveis.add(coletaveis[0], coletaveis[1], coletaveis[2], 50, 50)
 
     #verifica qual o proximo quadro
     def portas(self):
@@ -79,6 +80,7 @@ class Manager:
             #define o validador para poder carregar o novo quadro
             self.load = False
             self.quadro = self.mapa.portas[lim][0]
+            self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "fase3", "fase3_desenho", f"{self.quadro}.png"))
             #altera as posicoes de acordo com o json
             # uma posicao = -1 indica mante-la
             x, y = self.mapa.portas[lim][1]
@@ -95,7 +97,7 @@ class Manager:
     def run(self):
         if not self.load:
             self.load_mapa()
-        self.tela.fill((0,255,0))
+        self.tela.blit(self.fundo, (0,0))
         self.inimigos.update(self.tela, self.mapa.paredes, self.personagem, True)
         '''if self.inimigos.update(self.tela, self.mapa.paredes, self.personagem, True):
             if self.round == 2:
@@ -120,6 +122,6 @@ class Manager:
 
         self.personagem.update(self.tela, self.mapa.paredes, self.inimigos)
         #print(self.personagem.vida)
-        self.mapa.draw(self.tela)
+        #self.mapa.draw(self.tela)
         self.portas()
-        #print(pygame.mouse.get_pos())
+        print(pygame.mouse.get_pos())

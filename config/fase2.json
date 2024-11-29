@@ -57,7 +57,7 @@
     ],
     "portas": {
         "1": ["porta1_2",[-1, 550]],
-        "3": ["hub",[-1,5]]
+        "3": ["hub",[-1,7]]
     },
     "inimigos":[
         ["../assets/personagens/samyra.png",100, 100, 50,50, 1, "aleatorio", "t"]
