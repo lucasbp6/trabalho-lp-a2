@@ -3,10 +3,16 @@ import mapa
 import personagem
 import os
 import boss
+import interagiveis
+
+
+coracao = pygame.transform.scale(pygame.image.load("../assets/principal/vida_personagem.png"), (20,20))
+
 
 # Gerencia as fases e concatena todos os modulos do jogo
 class Manager:
     def __init__ (self, game):
+        self.game = game
         self.tela = game.tela
         # Organizar os enderecos corretos
         self.fases = {
@@ -24,6 +30,9 @@ class Manager:
         self.personagem = personagem.Perso_controle(game.path, 375,275,50,50,5) # posicoes rever
         self.inimigos = personagem.Inimigos()
         self.mapa = mapa.Mapa()
+        self.coletaveis = interagiveis.Coletavel()
+        self.coletaveis.exibir("objetivos", (8,80))
+        
 
         #ignorar --- testes
         self.round = 1
@@ -47,6 +56,10 @@ class Manager:
         for nimigo in self.mapa.npc:
             self.inimigos.add(personagem.Inimigo(nimigo[0], nimigo[1], nimigo[2], nimigo[3], nimigo[4], nimigo[5], nimigo[6]))   
         self.load = True
+        self.coletaveis.add("../assets/personagens/samyra.png", 400, 200, 20, 20)
+        self.coletaveis.add("../assets/personagens/samyra.png", 400, 400, 20, 20)
+        self.coletaveis.add("../assets/personagens/samyra.png", 400, 500, 20, 20)
+        self.coletaveis.add("../assets/personagens/samyra.png", 400, 100, 20, 20)
 
     #verifica qual o proximo quadro
     def portas(self):
@@ -82,7 +95,7 @@ class Manager:
     def run(self):
         if not self.load:
             self.load_mapa()
-        self.tela.fill((0,0,0))
+        self.tela.fill((0,255,0))
         self.inimigos.update(self.tela, self.mapa.paredes, self.personagem, True)
         '''if self.inimigos.update(self.tela, self.mapa.paredes, self.personagem, True):
             if self.round == 2:
@@ -92,7 +105,18 @@ class Manager:
                 self.inimigos.add(boss.Boss("../assets/samyra.png", 350, 50, 70,70, 1, 'boss2', ))
                 self.inimigos.add(boss.Boss("../assets/samyra.png", 350, 50, 70,70, 1, 'boss2', ))
                 self.round = 2'''
+        
+        """TESTES DE EXIBICAO DE VIDA E PROGRESSO"""
+        for i in range(self.personagem.vida):
+            self.tela.blit(coracao, (770 - 22*i, 10))
 
+        '''render = fonte.render("objetivos:", True, (255,255,255))
+        self.tela.blit(render, (8, 8))
+        pygame.draw.rect(self.tela, (255,255,255), obj)
+        pygame.draw.rect(self.tela, (255,0,0), pree)
+        if pree.width < 46:
+            pree.width = self.personagem.coletou * 46/4'''
+        self.coletaveis.update(self.tela, self.personagem)
 
         self.personagem.update(self.tela, self.mapa.paredes, self.inimigos)
         #print(self.personagem.vida)

@@ -3,9 +3,23 @@ import math
 import random
 import armas
 
+
+def load_sprites(path):
+    frames = {
+        'esquerda' : [pygame.image.load(f"../assets/{path}/esquerda_teste/esquerda_{i}.png") for i in range(1, 3)],
+        'direita' : [pygame.image.load(f"../assets/{path}/direita_teste/direita_{i}.png") for i in range(1, 3)],
+        'cima' : [pygame.image.load(f"../assets/{path}/cima_teste/cima_{i}.png") for i in range(1, 4)],
+        'baixo' : [pygame.image.load(f"../assets/{path}/baixo_teste/baixo_{i}.png") for i in range(1, 4)]
+    }
+    return frames
+
 class Personagem(pygame.sprite.Sprite):
     def __init__(self, path, x, y, largura, altura, vida):
         super().__init__()
+        self.frames = load_sprites('personagem_simples_teste_movimento')
+        self.frame = self.frames['direita']
+        self.index = 0
+        self.last_update = pygame.time.get_ticks()
         self.image = pygame.transform.scale(pygame.image.load(path).convert_alpha(), (largura,altura))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
@@ -55,20 +69,24 @@ class Personagem(pygame.sprite.Sprite):
     #verifica a direcao em que o personagem se movimentou
     '''SERA USADA PARA DEFINIR QUAL SPRITE SERA USADO'''
     def direcao(self, delta_x, delta_y):
-        vetor = [0, 0]
+        d = ''
         if delta_x < 0:
-            vetor[0] = -1
+            d = 'esquerda'
         elif delta_x > 0:
-            vetor[0] = 1
+            d = 'direita'
         if delta_y < 0:
-            vetor[1] = -1
+            d = 'cima'
         elif delta_y > 0:
-            vetor[1] = 1
-        
-        if not (vetor[0] == 0 and vetor[1] == 0):
-            self.vetor = vetor
+            d = 'baixo'
 
-        return vetor
+        if d == '':
+            return
+        self.frame = self.frames[d]
+        now = pygame.time.get_ticks()
+        if now - self.last_update >150:  # Tempo entre quadros (100ms aqui)
+            self.last_update = now
+            self.index = (self.index + 1) % len(self.frame)  # Loop nos quadros
+            self.image = pygame.transform.scale(self.frame[self.index], (50,50))  # Atualizar a imagem do sprite
     #teste
     import math
 
@@ -150,13 +168,14 @@ class Perso_controle(Personagem):
         if self.stamina > 0:
             self.stamina -= 1
         self.tiros.update(tela, paredes, inimigos)
-        if self.colisao_perso(inimigos) and self.imortal == 60:
+        if self.colisao_perso(inimigos) and self.imortal == 100:
             self.vida -= 1
             self.imortal = 0
-        if self.imortal < 60:
+        if self.imortal < 100:
             self.imortal += 1
         if self.vida == 0:
             return 'a'
+        print(self.imortal)
         #print('vida:', self.vida, 'coletou:', self.coletou)
         
     
@@ -278,7 +297,7 @@ class Inimigo(Personagem):
 
         # Adiciona a bala
         self.tiros.add(armas.Bala(self.rect, direcao_x, direcao_y, 7))
-        self.stamina = 40
+        self.stamina = 80
 
 
     #dentre os varios tipos de movimentos, ele realiza de acordo com o parametro
@@ -348,17 +367,18 @@ class Inimigo(Personagem):
             # Movimenta na direção aleatória
             self.rect.x += delta_x
             colisao_horizontal = self.colisao(paredes)
-            if colisao_horizontal:
+            if colisao_horizontal or self.rect.x < 0 or self.rect.x > 780:
                 # Reverte o movimento horizontal em caso de colisão
                 self.rect.x -= delta_x
                 self.direcao_aleatoria[0] = random.choice([-1, 0, 1])  # Gera nova direção horizontal
 
             self.rect.y += delta_y
             colisao_vertical = self.colisao(paredes)
-            if colisao_vertical:
+            if colisao_vertical or self.rect.y < 0 or self.rect.y > 580:
                 # Reverte o movimento vertical em caso de colisão
                 self.rect.y -= delta_y
                 self.direcao_aleatoria[1] = random.choice([-1, 0, 1])  # Gera nova direção vertical
+
 
             if self.stamina <= 0 :  
                 self.tiro(paredes, controlavel)
