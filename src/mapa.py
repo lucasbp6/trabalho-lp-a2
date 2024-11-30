@@ -9,14 +9,17 @@ class Mapa:
         self.portas = []
         self.npc = []
         self.coletaveis = []
+        self.objetivo = 0
+        self.posicao = []
         self.dados = None
 
     #Carrega todo o arquivo json da fase para a memoria
     def load(self, path):
         with open(path, 'r') as arquivo:
-            print(path)
             dados = json.load(arquivo)
         self.dados = dados
+        self.objetivo = dados["objetivo"]
+        self.posicao = (dados["posicao"][0], dados["posicao"][1]) 
 
     #Ativa um quadro especifico do mapa, de acordo com o personagem
     def ativar(self, chave):
@@ -38,9 +41,8 @@ class Mapa:
         for inimigos in self.dados[chave]["inimigos"]:
             if len(inimigos) != 0:
                 #verifica se o inimigo ja foi morto 'f'
-                if inimigos[7] == "t":
-                    self.npc.append([inimigos[0], inimigos[1], inimigos[2], inimigos[3], inimigos[4], inimigos[5], inimigos[6]])
-        
+                self.npc.append([inimigos[0], inimigos[1], inimigos[2], inimigos[3], inimigos[4], inimigos[5], inimigos[6]])
+    
         self.coletaveis = []
         for coletaveis in self.dados[chave]["coletaveis"]:
             self.coletaveis.append([coletaveis["path"],coletaveis["x"], coletaveis["y"]] )

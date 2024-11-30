@@ -1,4 +1,5 @@
-{
+{   "objetivo": 4,
+    "posicao": [300,400],
     "hub": {
         "paredes": [
         {"x": 0, "y": 0, "largura": 800, "altura": 5},
@@ -123,15 +124,14 @@
         "paredes": [
         {"x": 0, "y": 0, "largura": 800, "altura": 5},
         {"x": 0, "y": 595, "largura": 800, "altura": 5},
-        {"x": 350, "y": 250, "largura": 100, "altura": 100},
         {"x": 600, "y": 0, "largura": 20, "altura": 200},
         {"x": 600, "y": 180, "largura": 200, "altura": 20},
         {"x": 600, "y": 400, "largura": 20, "altura": 250},
-        {"x": 600, "y": 400, "largura": 200, "altura": 10},
-        {"x": 600, "y": 200, "largura": 40, "altura": 200}
+        {"x": 600, "y": 400, "largura": 200, "altura": 10}
         ],
         "portas": {
-            "4": ["parte5", [745, -1]]
+            "4": ["parte5", [745, -1]],
+            "2": ["fase5"]
         },
         "inimigos": [
             []

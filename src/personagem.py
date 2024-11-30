@@ -16,6 +16,7 @@ def load_sprites(path):
 class Personagem(pygame.sprite.Sprite):
     def __init__(self, path, x, y, largura, altura, vida):
         super().__init__()
+        self.inicial = [path, x, y, largura, altura, vida]
         self.frames = load_sprites('personagem_simples_teste_movimento')
         self.frame = self.frames['direita']
         self.index = 0
@@ -175,7 +176,6 @@ class Perso_controle(Personagem):
             self.imortal += 1
         if self.vida == 0:
             return 'a'
-        print(self.imortal)
         #print('vida:', self.vida, 'coletou:', self.coletou)
         
     
@@ -188,26 +188,22 @@ class Inimigos:
         self.inimigos.append(inimigo)
 
     def clean(self):
-        print(len(self.inimigos))
-        print("apagou")
         self.inimigos = []
 
     def update(self,tela, paredes, controlavel = None, v = False):
         to_remove = []
-        b = False
         for inimigo in self.inimigos:
             if inimigo.vida == 0:
                 to_remove.append(inimigo)
             inimigo.update(tela, paredes, controlavel, v)
         for inimigo in to_remove:    
             self.inimigos.remove(inimigo)
-            if inimigo.sentido == 'boss2':
-                b = True
-        return b
+        return to_remove
 
 class Inimigo(Personagem):
     def __init__(self, path, x, y, largura, altura,vida,  sentido):
         super().__init__(path, x, y, largura, altura, vida)
+        self.inicial = [path, x, y, largura, altura, vida, sentido]
         self.multiplicador = 1
         self.sentido = sentido
         self.velocidade = 3
