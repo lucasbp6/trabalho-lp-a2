@@ -25,14 +25,19 @@ class Coletavel:
         self.lista.append([image, rect, path])
 
     def draw(self, tela, personagem):
+        completo = False
         if self.targets:
             tela.blit(self.nome, (8,2)) 
             pygame.draw.rect(tela,(255,255,255), pygame.Rect(8, 28, 100, 10))
             self.barra.width = personagem.coletou*96/self.total
+            if personagem.coletou*96/self.total == 96:
+                completo = True
             pygame.draw.rect(tela,(0,0,255), self.barra)
 
         for coletavel in self.lista:
             tela.blit(coletavel[0],coletavel[1])
+
+        return completo
 
     def colisao(self, personagem):
         for coletavel in self.lista:
@@ -43,6 +48,5 @@ class Coletavel:
         return None
                 
     def update(self, tela, personagem):
-        self.draw(tela, personagem)
-        return self.colisao(personagem)
+        return self.draw(tela, personagem), self.colisao(personagem)
 

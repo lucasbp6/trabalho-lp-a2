@@ -5,7 +5,7 @@ import os
 import boss
 import interagiveis
 
-
+fonte = pygame.font.SysFont('arial', 25, False, False)
 coracao = pygame.transform.scale(pygame.image.load("../assets/principal/vida_personagem.png"), (20,20))
 
 
@@ -32,6 +32,8 @@ class Manager:
         self.inimigos = personagem.Inimigos()
         self.mapa = mapa.Mapa()
         self.coletaveis = interagiveis.Coletavel()
+        self.time_inicial = pygame.time.get_ticks()
+        self.objetivos = False
         
         
 
@@ -48,6 +50,7 @@ class Manager:
             self.troca = False
             self.quadro = 'hub'
             self.personagem.rect.topleft = self.mapa.posicao
+            self.objetivos = False
 
         #self.inimigos.add(boss.Boss("../assets/samyra.png",350, 50, 100,100, 1, 'boss1', ))
         #self.inimigos.add(personagem.Inimigo("../assets/samyra.png", 350, 50, 50, 50, 3, "aleatorio"))
@@ -66,6 +69,8 @@ class Manager:
             self.coletaveis.add(coletaveis[0], coletaveis[1], coletaveis[2], 50, 50)
         self.coletaveis.exibir("objetivos", (8,80), self.mapa.objetivo)
             
+    def fim_fase(self):
+        pass
     #verifica qual o proximo quadro
     def portas(self):
         x, y = self.personagem.rect.center
@@ -73,7 +78,7 @@ class Manager:
 
         if y < -20:
             lim = '1'
-        if x > 820:
+        if x > 810:
             lim = '2'
         if y > 620:
             lim = '3'
@@ -85,7 +90,8 @@ class Manager:
             self.load = False
             self.quadro = self.mapa.portas[lim][0]
             
-            if self.quadro in self.fases:
+            if self.quadro in self.fases and self.objetivos:
+                self.fim_fase()
                 self.troca = True
                 self.seletor = self.fases[self.quadro]
                 return
@@ -102,6 +108,18 @@ class Manager:
                 pass
             else:
                 self.personagem.rect.y = y
+
+    def tempo(self):
+        self.tempo_decorrido = (pygame.time.get_ticks() - self.time_inicial)
+        minutos = self.tempo_decorrido // 60000  
+        segundos = (self.tempo_decorrido % 60000) // 1000  
+        milissegundos = self.tempo_decorrido % 1000  //100
+        render = fonte.render(f"Tempo: {minutos:02}:{segundos:02}.{milissegundos}", True, (0,0,0))
+        fundin = render.get_rect()
+        fundin.topleft = (330,10)
+        pygame.draw.rect(self.tela, (255,255,255), fundin)
+        self.tela.blit(render, (330, 10))
+        
                 
     #roda o jogo chamando os updates
     def run(self):
@@ -125,15 +143,16 @@ class Manager:
         """TESTES DE EXIBICAO DE VIDA E PROGRESSO"""
         for i in range(self.personagem.vida):
             self.tela.blit(coracao, (770 - 22*i, 10))
- 
+
         
         self.personagem.update(self.tela, self.mapa.paredes, self.inimigos)
         #print(self.personagem.vida)
         #self.mapa.draw(self.tela)
 
-        coletavel = self.coletaveis.update(self.tela, self.personagem)
+        self.objetivos, coletavel = self.coletaveis.update(self.tela, self.personagem)
         if coletavel != None:
             self.mapa.dados[self.quadro]["coletaveis"].remove({"path" :coletavel[2], "x":coletavel[1].x, "y": coletavel[1].y})
 
         self.portas()
+        self.tempo()
         #print(pygame.mouse.get_pos())

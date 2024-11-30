@@ -1,5 +1,5 @@
 {   "objetivo": 4,
-    "posicao": [300,400],
+    "posicao": [300,300],
     "hub": {
         "paredes": [
         {"x": 0, "y": 0, "largura": 800, "altura": 5},
