@@ -1,6 +1,7 @@
 import pygame
 import json
 import personagem as per
+import interagiveis as int
 
 
 class Mapa:
@@ -9,6 +10,7 @@ class Mapa:
         self.paredes = []
         self.portas = []
         self.npc = []
+        self.coletaveis = int.Coletaveis()
         self.dados = None
 
     #Carrega todo o arquivo json da fase para a memoria
@@ -39,6 +41,11 @@ class Mapa:
             if len(inimigo) != 0:
                 self.npc.append(per.Inimigo(inimigo['path'],inimigo['x'],inimigo['y'],inimigo['largura'],inimigo['altura'],inimigo['vida'],inimigo['sentido']))
         
+        for coletaveis in self.dados[chave]["coletaveis"]:
+            self.coletaveis.add(coletaveis["path"],coletaveis["x"], coletaveis["y"],coletaveis["largura"],coletaveis["altura"])
+            
+            
+            
     '''REMOVER QUANDO TERMINAR DE USAR'''
     #apenas para visualizacao do mapa
     def draw(self, tela):

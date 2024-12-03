@@ -116,6 +116,7 @@ class Perso_controle(Personagem):
         self.stamina = 40
         self.imortal = 0
         self.coletou = 0
+        self.vivo = True
     
     #Coleta os controles do usuario
     def controle(self, paredes):
@@ -156,8 +157,7 @@ class Perso_controle(Personagem):
         if self.imortal < 60:
             self.imortal += 1
         if self.vida == 0:
-            return 'a'
-        #print('vida:', self.vida, 'coletou:', self.coletou)
+            self.vivo = False
         
     
 #armazena uma lista de inimigos
@@ -187,13 +187,14 @@ class Inimigos:
         return b
 
 class Inimigo(Personagem):
-    def __init__(self, path, x, y, largura, altura,vida,  sentido):
+    def __init__(self, path, x, y, largura, altura,vida,  sentido,trajetoria = None):
         super().__init__(path, x, y, largura, altura, vida)
         self.multiplicador = 1
         self.sentido = sentido
         self.velocidade = 3
         self.stamina = 40
         self.timer_aleatorio = 0
+        self.trajetoria = trajetoria
 
     
     #verifica a diferença entre o inimigo em relacao ao player
