@@ -108,7 +108,6 @@ class Menu:
         #verifica todos eventos, inclusive o de troca de cores
         self.eventos()
 
-
 class Game:
     def __init__(self):
         pygame.init()

@@ -4,6 +4,7 @@ import personagem
 import os
 import boss
 import interagiveis
+import ui_menu
 
 fonte = pygame.font.SysFont('arial', 25, False, False)
 coracao = pygame.transform.scale(pygame.image.load("../assets/principal/vida_personagem.png"), (20,20))
@@ -23,7 +24,8 @@ class Manager:
             "fase5": os.path.join("..","config", "fase5.json")
         }
         # Seletor padrao = fase1
-        self.seletor = self.fases['fase3']
+        self.fase = 3
+        self.seletor = self.fases[f"fase{self.fase}"]
         self.troca = True
         self.quadro = 'hub'
         self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "fase3", "mapa", f"{self.quadro}.png"))
@@ -45,6 +47,7 @@ class Manager:
 
         #carrega todo json
         if  self.troca:
+            self.seletor = self.fases[f"fase{self.fase}"]
             print("testando o mapa")
             self.mapa.load(self.seletor)
             self.troca = False
@@ -70,7 +73,40 @@ class Manager:
         self.coletaveis.exibir("objetivos", (8,80), self.mapa.objetivo)
             
     def fim_fase(self):
-        pass
+        clock = pygame.time.Clock()
+        fonte2 = pygame.font.SysFont('arial', 50, False, False)
+        tempo = self.tempo(True)
+        objetos = [ui_menu.Text("Proxima fase", fonte2,400,  450, (255,255,255), self.game, (0,0,150)),
+                   ui_menu.Text("Voltar ao menu", fonte2,400,  500, (255,255,255), self.game, (0,0,150)),
+                   ui_menu.Text("Parabens", fonte2,400,  100, (255,255,255), self.game),
+                   ui_menu.Text(f"Tempo : {tempo}", fonte2,400,  200, (255,255,255), self.game),
+                   ui_menu.Text(f"Fase {self.fase} concluida", fonte2,400,  300, (255,255,255), self.game)]
+        rodando = True
+        while rodando:
+            clock.tick(60)
+            click_pos = None
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                if evento.type == pygame.MOUSEBUTTONDOWN:
+                    click_pos = evento.pos
+
+            pos = pygame.mouse.get_pos()
+            self.tela.fill((0,0,0))
+
+            for objeto in objetos:
+                a = objeto.update(pos, click_pos)
+                if a == "proxima fase":
+                    self.troca = True
+                    self.fase += 1
+                    self.quadro = 'hub'
+                    return
+                if a == "Voltar ao menu":
+                    self.game.seletor("menu")
+                    return
+            pygame.display.flip()
+
     #verifica qual o proximo quadro
     def portas(self):
         x, y = self.personagem.rect.center
@@ -90,10 +126,8 @@ class Manager:
             self.load = False
             self.quadro = self.mapa.portas[lim][0]
             
-            if self.quadro in self.fases and self.objetivos:
+            if self.quadro == "end":
                 self.fim_fase()
-                self.troca = True
-                self.seletor = self.fases[self.quadro]
                 return
 
             self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "fase3", "mapa", f"{self.quadro}.png"))
@@ -109,16 +143,21 @@ class Manager:
             else:
                 self.personagem.rect.y = y
 
-    def tempo(self):
+    def tempo(self, retorno = False):
         self.tempo_decorrido = (pygame.time.get_ticks() - self.time_inicial)
         minutos = self.tempo_decorrido // 60000  
         segundos = (self.tempo_decorrido % 60000) // 1000  
         milissegundos = self.tempo_decorrido % 1000  //100
+
+        if retorno:
+            return f"{minutos:02}:{segundos:02}.{milissegundos}"
+
         render = fonte.render(f"Tempo: {minutos:02}:{segundos:02}.{milissegundos}", True, (0,0,0))
         fundin = render.get_rect()
         fundin.topleft = (330,10)
         pygame.draw.rect(self.tela, (255,255,255), fundin)
         self.tela.blit(render, (330, 10))
+
         
                 
     #roda o jogo chamando os updates
@@ -144,12 +183,27 @@ class Manager:
         for i in range(self.personagem.vida):
             self.tela.blit(coracao, (770 - 22*i, 10))
 
-        
-        self.personagem.update(self.tela, self.mapa.paredes, self.inimigos)
+        """ Muito especifico para a fase 3"""
+        if self.quadro == "parte5" and not self.objetivos:
+            bloqueio = pygame.Rect(550, 0,  20,  200)
+            pygame.draw.rect(self.tela, (255,0,0), bloqueio)
+            self.mapa.paredes.append(bloqueio)
+            self.personagem.update(self.tela, self.mapa.paredes, self.inimigos)
+            self.mapa.paredes.remove(bloqueio)
+
+        elif self.quadro == "fim":
+            bloqueio = pygame.Rect(0, 0,  20,  600)
+            pygame.draw.rect(self.tela, (255,0,0), bloqueio)
+            self.mapa.paredes.append(bloqueio)
+            self.personagem.update(self.tela, self.mapa.paredes, self.inimigos)
+            self.mapa.paredes.remove(bloqueio)
+        else:
+            self.personagem.update(self.tela, self.mapa.paredes , self.inimigos)
         #print(self.personagem.vida)
         #self.mapa.draw(self.tela)
 
         self.objetivos, coletavel = self.coletaveis.update(self.tela, self.personagem)
+        #print(self.objetivos)
         if coletavel != None:
             self.mapa.dados[self.quadro]["coletaveis"].remove({"path" :coletavel[2], "x":coletavel[1].x, "y": coletavel[1].y})
 
