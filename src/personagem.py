@@ -16,7 +16,7 @@ def load_sprites(path):
 class Personagem(pygame.sprite.Sprite):
     def __init__(self, path, x, y, largura, altura, vida):
         super().__init__()
-        self.inicial = [path, x, y, largura, altura, vida]
+        self.inicial = {"path":path,"x": x,"y": y,"largura": largura,"altura": altura, "vida":vida}
         self.frames = load_sprites(path)
         self.frame = self.frames['direita']
         self.index = 0
@@ -202,7 +202,7 @@ class Inimigos:
 class Inimigo(Personagem):
     def __init__(self, path, x, y, largura, altura,vida,  sentido):
         super().__init__(path, x, y, largura, altura, vida)
-        self.inicial = [path, x, y, largura, altura, vida, sentido]
+        self.inicial = {"path":path,"x": x,"y": y,"largura": largura,"altura": altura, "vida":vida, "sentido":sentido}
         self.multiplicador = 1
         self.sentido = sentido
         self.velocidade = 3
