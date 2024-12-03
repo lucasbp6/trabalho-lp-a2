@@ -49,5 +49,3 @@ class Coletavel:
                 
     def update(self, tela, personagem):
         return self.draw(tela, personagem), self.colisao(personagem)
-
-
