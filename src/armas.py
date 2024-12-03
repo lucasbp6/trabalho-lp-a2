@@ -72,6 +72,6 @@ class Bala:
     #aumenta a posição da bala no sentido definido    
     def update(self):
         self.contador -= 1
-        self.pos = (self.pos[0] + self.sentido[0]*10, self.pos[1]+ self.sentido[1]*10)
+        self.pos = (self.pos[0] + self.sentido[0]*8, self.pos[1]+ self.sentido[1]*8)
         return self.contador
     

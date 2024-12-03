@@ -13,7 +13,28 @@ FONTE2 = pygame.font.SysFont('arial', 70, False, False)
 
 #blocos de texto para selecao no menu
 class Text:
+    """
+    Caixas de texto não iterativa para usar em menu ou afins
+    """
     def __init__(self, texto, fonte, x, y, cor, game, cor_caixa = None):
+        """
+        Parametros
+        ----------
+        texto: str
+            texto que sera exibido
+        fonte: pygame.font.Font
+            fonte para o texto
+        x: int
+            posicao a esquerda do texo
+        y: int
+            posicao a cima do texto
+        cor: tuple
+            uma tupla indicando a cor em rgb
+        game: Game
+            espera receber a classe game para ter acesso a tela
+        cor_caixa: tuple
+            caso seja diferente de None quando passar o mouse o fundo ganha cor
+        """
         self.tela = game.tela
         self.texto = texto
         self.render = fonte.render(texto, True, cor)
@@ -21,9 +42,22 @@ class Text:
         self.box = pygame.Rect(LARGURA/2 - self.render.get_size()[0]/2 , y , self.render.get_size()[0]+ 10, self.render.get_size()[1] + 10)
 
     def desenhar(self):
+        """
+        exibe as caixas de texto na tela
+
+        Parametros
+        ----------
+        recebe apenas a propria classe
+
+        Retorno
+        -------
+        nao retorna valor algum
+        """
         self.tela.blit(self.render, (self.box.left + 5, self.box.top +5))  
 
     def on_contact(self, mouse_pos):
+        """
+        """
         if self.cor == None:
             return
         if self.box.collidepoint(mouse_pos):
@@ -44,10 +78,10 @@ class Text:
 #blocos de imagem para selecao de personagens
 class SelectPlayer:
 
-    def __init__(self, folder,folder2, archive, num, game):
+    def __init__(self, path, num, game):
         self.tela = game.tela
-        self.address = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),folder,folder2, archive)
-        print(self.address)
+        self.path = path
+        self.address = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets","personagens", f"{path}.png")
         self.image = pygame.transform.scale(pygame.image.load(self.address).convert_alpha(), (LARGURA/5, ALTURA/3))
         self.rect = pygame.Rect((num*2 + num - 2)*LARGURA/10, ALTURA/3, LARGURA/5, ALTURA/3)
         self.num = num
@@ -67,7 +101,7 @@ class SelectPlayer:
     def on_click(self, click):
         if click != None:
             if self.rect.collidepoint(click):
-                return self.address
+                return self.path
         return None
 
     def update(self, mouse_pos, mouse_click):
@@ -75,4 +109,3 @@ class SelectPlayer:
         self.draw()
         return self.on_click(mouse_click)
         
-

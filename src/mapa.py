@@ -9,14 +9,18 @@ class Mapa:
         self.paredes = []
         self.portas = []
         self.npc = []
+        self.coletaveis = []
+        self.objetivo = 0
+        self.posicao = []
         self.dados = None
 
     #Carrega todo o arquivo json da fase para a memoria
     def load(self, path):
         with open(path, 'r') as arquivo:
-            print(path)
             dados = json.load(arquivo)
         self.dados = dados
+        self.objetivo = dados["objetivo"]
+        self.posicao = (dados["posicao"][0], dados["posicao"][1]) 
 
     #Ativa um quadro especifico do mapa, de acordo com o personagem
     def ativar(self, chave):
@@ -35,13 +39,12 @@ class Mapa:
         
         #carrega os inimigos do mapa
         self.npc = []
+
         for inimigo in self.dados[chave]["inimigos"]:
             if len(inimigo) != 0:
                 self.npc.append(per.Inimigo(inimigo['path'],inimigo['x'],inimigo['y'],inimigo['largura'],inimigo['altura'],inimigo['vida'],inimigo['sentido']))
-        
-    '''REMOVER QUANDO TERMINAR DE USAR'''
-    #apenas para visualizacao do mapa
-    def draw(self, tela):
-        for parede in self.paredes:
-            pygame.draw.rect(tela, (255,155,243), parede)  
-        
+    
+    
+        self.coletaveis = []
+        for coletaveis in self.dados[chave]["coletaveis"]:
+            self.coletaveis.append([coletaveis["path"],coletaveis["x"], coletaveis["y"]] )
