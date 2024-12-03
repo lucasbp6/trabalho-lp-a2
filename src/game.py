@@ -58,7 +58,7 @@ class Menu:
         if self.troca == True:
             self.objetos = [menu.Text("Novo jogo", FONTE,0,  275, WHITE, self.game, GREEN),menu.Text("Carregar", FONTE,0, 325, WHITE,  self.game, GREEN), menu.Text("Sair", FONTE, 0,375, WHITE, self.game, GREEN)]
             self.troca = False
-        fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "principal", "hub.jpeg"))
+        fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "principal", "hub.png"))
         self.game.tela.blit(fundo,(0,0))
 
     #renderiza as imagens do jogadores para escolher    
