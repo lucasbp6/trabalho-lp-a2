@@ -26,7 +26,7 @@
         "portas": {
             "1": ["porta1_1",[-1, 550]],
             "2": ["porta2_1",[5, -1]],
-            "3": ["porta3_1",[-1, 5]],
+            "3": ["end",[-1, 5]],
             "4": ["porta4_1",[750, -1]]
         },
         "inimigos": [
@@ -64,7 +64,7 @@
         "3": ["hub",[-1,7]]
     },
     "inimigos":[
-        ["../assets/personagens/samyra.png",100, 100, 50,50, 1, "aleatorio"]
+        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
     ],
     "coletaveis":[
         
@@ -89,7 +89,7 @@
         "3": ["porta1_1",[-1,5]]
     },
     "inimigos":[
-        ["../assets/personagens/samyra.png",350, 50, 50,50, 1, "aleatorio"]
+        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
     ],
     "coletaveis":[
         
@@ -114,7 +114,7 @@
         "4": ["hub",[750,-1]]
     },
     "inimigos":[
-        ["../assets/personagens/samyra.png",350, 50, 50,50, 1, "aleatorio"]
+        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
     ],
     "coletaveis":[
         
@@ -134,7 +134,7 @@
         "3": ["porta2_1",[740, 50]]
     },
     "inimigos":[
-        ["../assets/personagens/samyra.png",350, 50, 50,50, 1, "aleatorio"]
+        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
     ],
     "coletaveis":[
         
@@ -165,7 +165,7 @@
         "2": ["porta3_2",[5, -1]]
     },
     "inimigos":[
-        ["../assets/personagens/samyra.png",350, 50, 50,50, 1, "aleatorio"]
+        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
     ],
     "coletaveis":[
         
@@ -188,7 +188,7 @@
         "4": ["porta3_1",[750, -1]]
     },
     "inimigos":[
-        ["../assets/personagens/samyra.png",350, 50, 50,50, 1, "aleatorio"]
+        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
     ],
     "coletaveis":[
         
@@ -221,7 +221,7 @@
         "4": ["porta4_2",[750, -1]]
     },
     "inimigos":[
-        ["../assets/personagens/samyra.png",350, 50, 50,50, 1, "aleatorio"]
+        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
     ],
     "coletaveis":[
         
@@ -245,7 +245,7 @@
         "2": ["porta4_1",[5, -1]]
     },
     "inimigos":[
-        ["../assets/personagens/samyra.png",350, 50, 50,50, 1, "aleatorio"]
+        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
     ],
     "coletaveis":[
         

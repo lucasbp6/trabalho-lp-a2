@@ -6,10 +6,10 @@ import armas
 
 def load_sprites(path):
     frames = {
-        'esquerda' : [pygame.image.load(f"../assets/{path}/esquerda_teste/esquerda_{i}.png") for i in range(1, 3)],
-        'direita' : [pygame.image.load(f"../assets/{path}/direita_teste/direita_{i}.png") for i in range(1, 3)],
-        'cima' : [pygame.image.load(f"../assets/{path}/cima_teste/cima_{i}.png") for i in range(1, 4)],
-        'baixo' : [pygame.image.load(f"../assets/{path}/baixo_teste/baixo_{i}.png") for i in range(1, 4)]
+        'esquerda' : [pygame.image.load(f"../assets/personagens/{path}/esquerda/esquerda_{i}.png") for i in range(1, 3)],
+        'direita' : [pygame.image.load(f"../assets/personagens/{path}/direita/direita_{i}.png") for i in range(1, 3)],
+        'cima' : [pygame.image.load(f"../assets/personagens/{path}/cima/cima_{i}.png") for i in range(1, 4)],
+        'baixo' : [pygame.image.load(f"../assets/personagens/{path}/baixo/baixo_{i}.png") for i in range(1, 4)]
     }
     return frames
 
@@ -17,11 +17,11 @@ class Personagem(pygame.sprite.Sprite):
     def __init__(self, path, x, y, largura, altura, vida):
         super().__init__()
         self.inicial = [path, x, y, largura, altura, vida]
-        self.frames = load_sprites('personagem_simples_teste_movimento')
+        self.frames = load_sprites(path)
         self.frame = self.frames['direita']
         self.index = 0
         self.last_update = pygame.time.get_ticks()
-        self.image = pygame.transform.scale(pygame.image.load(path).convert_alpha(), (largura,altura))
+        self.image = pygame.transform.scale(pygame.image.load(f"../assets/personagens/{path}.png").convert_alpha(), (largura,altura))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.vetor = (1,0)
@@ -84,12 +84,11 @@ class Personagem(pygame.sprite.Sprite):
             return
         self.frame = self.frames[d]
         now = pygame.time.get_ticks()
-        if now - self.last_update >150:  # Tempo entre quadros (100ms aqui)
+        if now - self.last_update >200:  
             self.last_update = now
-            self.index = (self.index + 1) % len(self.frame)  # Loop nos quadros
-            self.image = pygame.transform.scale(self.frame[self.index], (50,50))  # Atualizar a imagem do sprite
-    #teste
-    import math
+            self.index = (self.index + 1) % len(self.frame)  
+            self.image = pygame.transform.scale(self.frame[self.index], (50,50)) 
+    
 
     #Verifica a direção do mouse em relacao ao personagem
     def direcao_mouse(self, mouse_x, mouse_y):

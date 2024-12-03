@@ -25,11 +25,11 @@ class Manager:
         }
 
         # Seletor padrao = fase1
-        self.fase = 3
+        self.fase = 2
         self.seletor = self.fases[f"fase{self.fase}"]
         self.troca = True
         self.quadro = 'hub'
-        self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "fase3", "mapa", f"{self.quadro}.png"))
+        self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
         self.load = False
         self.personagem = personagem.Perso_controle(game.path, 25,25,50,50,5) # posicoes rever
         self.inimigos = personagem.Inimigos()
@@ -98,7 +98,7 @@ class Manager:
 
             for objeto in objetos:
                 a = objeto.update(pos, click_pos)
-                if a == "proxima fase":
+                if a == "Proxima fase":
                     self.troca = True
                     self.fase += 1
                     self.quadro = 'hub'
@@ -129,9 +129,10 @@ class Manager:
             
             if self.quadro == "end":
                 self.fim_fase()
+                self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
                 return
 
-            self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "fase3", "mapa", f"{self.quadro}.png"))
+            self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
             #altera as posicoes de acordo com o json
             # uma posicao = -1 indica mante-la
             x, y = self.mapa.portas[lim][1]
