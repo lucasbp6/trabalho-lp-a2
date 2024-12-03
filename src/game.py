@@ -40,7 +40,6 @@ class Menu:
             for personagem in self.personagens:
                 r = personagem.update(pos, click_pos)
                 if r != None:
-                    print(r)
                     #define o path do personagem e troca o seletor do game para a classe responsavel pelas fases
                     self.game.path = r
                     self.game.seletor('fase')
@@ -71,7 +70,6 @@ class Menu:
         
     #funcao em desenvolvimento para um futuro, caso de tempo
     def verifica_codigo(self):
-        print("entrei")
         if self.codigo == "1111":
             print(self.codigo)
             self.objetos.remove(menu.Text("Erro, codigo invalido", FONTE,10, ALTURA/2 + 100, WHITE, self.game))
@@ -110,7 +108,6 @@ class Menu:
         #verifica todos eventos, inclusive o de troca de cores
         self.eventos()
 
-
 class Game:
     def __init__(self):
         pygame.init()
@@ -128,7 +125,7 @@ class Game:
 
     #troca entre o menu e as fases do jogo
     def seletor(self, fase):
-        print("seletor")
+
         self.atual = self.estados[fase](self)
 
     #loop principal do jogo, coleta os principais eventos

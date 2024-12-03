@@ -47,7 +47,6 @@ class SelectPlayer:
     def __init__(self, folder,folder2, archive, num, game):
         self.tela = game.tela
         self.address = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),folder,folder2, archive)
-        print(self.address)
         self.image = pygame.transform.scale(pygame.image.load(self.address).convert_alpha(), (LARGURA/5, ALTURA/3))
         self.rect = pygame.Rect((num*2 + num - 2)*LARGURA/10, ALTURA/3, LARGURA/5, ALTURA/3)
         self.num = num
