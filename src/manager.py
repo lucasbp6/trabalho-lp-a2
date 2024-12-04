@@ -10,6 +10,7 @@ fonte = pygame.font.SysFont('arial', 25, False, False)
 coracao = pygame.transform.scale(pygame.image.load("../assets/principal/vida_personagem.png"), (20,20))
 
 
+
 # Gerencia as fases e concatena todos os modulos do jogo
 class Manager:
     def __init__ (self, game):
@@ -102,10 +103,10 @@ class Manager:
                     self.troca = True
                     self.fase += 1
                     self.quadro = 'hub'
-                    return
+                    return True
                 if a == "Voltar ao menu":
                     self.game.seletor("menu")
-                    return
+                    return False
             pygame.display.flip()
 
     #verifica qual o proximo quadro
@@ -128,8 +129,8 @@ class Manager:
             self.quadro = self.mapa.portas[lim][0]
             
             if self.quadro == "end":
-                self.fim_fase()
-                self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
+                if self.fim_fase():
+                    self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
                 return
 
             self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
@@ -185,8 +186,39 @@ class Manager:
         for i in range(self.personagem.vida):
             self.tela.blit(coracao, (770 - 22*i, 10))
 
+        """Muito especifico para a fase 2"""
+        if self.fase == 2 and self.quadro == 'hub' and self.objetivos:
+            portal = pygame.Rect(360, 260, 80, 80)
+            pygame.draw.rect(self.tela, (0,0,255), portal)
+            if portal.colliderect(self.personagem.rect):
+                if self.fim_fase():
+                    self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
+                    self.load = False
+                return
+            
+        """Muito especifico para a fase 4"""
+        if self.fase == 4 and self.quadro == 'hub' and self.objetivos:
+            portal = pygame.Rect(360, 260, 80, 80)
+            pygame.draw.rect(self.tela, (0,0,255), portal)
+            if portal.colliderect(self.personagem.rect):
+                if self.fim_fase():
+                    self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
+                    self.load = False
+                return
+            
+        """Muito especifico para a fase 5"""
+        if self.fase == 5 and self.quadro == 'hub' and self.objetivos:
+            portal = pygame.Rect(360, 260, 80, 80)
+            pygame.draw.rect(self.tela, (0,0,255), portal)
+            if portal.colliderect(self.personagem.rect):
+                if self.fim_fase():
+                    self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
+                    self.load = False
+                return
+            
+
         """ Muito especifico para a fase 3"""
-        if self.quadro == "parte5" and not self.objetivos:
+        if self.fase == 3 and self.quadro == "parte5" and not self.objetivos:
             bloqueio = pygame.Rect(550, 0,  20,  200)
             pygame.draw.rect(self.tela, (255,0,0), bloqueio)
             self.mapa.paredes.append(bloqueio)
