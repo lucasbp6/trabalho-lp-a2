@@ -15,7 +15,7 @@ FONTE2 = pygame.font.SysFont('arial', 70, False, False)
 class dead_screen:
     def __init__(self,game):
         self.game = game
-        self.estados = {"death" = self.death,"Início": self.inicio ,
+        self.estados = {"death": self.death,"Início": self.inicio ,
         "Retomar":self.retomar,
         "Sair": pygame.quit}
         self.atual = self.estados['death']
@@ -137,7 +137,7 @@ class Game:
         self.rodando = True
         self.estados = {
             "menu": Menu,
-            "fase": manager.Manager
+            "fase": manager.Manager,
             "morto": dead_screen
         }
         self.atual = self.estados["menu"](self)

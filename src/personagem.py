@@ -131,7 +131,7 @@ class Perso_controle(Personagem):
             delta_y -= 5
         if teclas[pygame.K_s] or teclas[pygame.K_DOWN]:
             delta_y += 5
-        if teclas[pygame.K_SPACE]  and self.stamina <= 0:
+        if teclas[pygame.K_SPACE]  and self.stamina => 0:
             self.tiro()
         self.movimento(delta_x, delta_y, paredes)
 
@@ -156,7 +156,7 @@ class Perso_controle(Personagem):
             self.imortal = 0
         if self.imortal < 60:
             self.imortal += 1
-        if self.vida == 0:
+        if self.vida <= 0:
             self.vivo = False
         
     
@@ -286,6 +286,7 @@ class Inimigo(Personagem):
     #dentre os varios tipos de movimentos, ele realiza de acordo com o parametro
     def movimento(self, paredes, controlavel = None):
         delta_x, delta_y = 0,0
+        
         if self.sentido == 'x':
             delta_x = self.velocidade*self.multiplicador
             delta_y = 0
@@ -298,6 +299,7 @@ class Inimigo(Personagem):
                 elif delta_x < 0: 
                     self.rect.left = colisao_horizontal.right
                     self.multiplicador = 1
+                    
         if self.sentido == 'y':
             delta_y = self.velocidade*self.multiplicador
             delta_x = 0
@@ -386,4 +388,4 @@ class Inimigo(Personagem):
     def update(self,tela, paredes, controlavel = None, v = False):
         self.tiros.update(tela, paredes, controlavel, v)
         self.movimento(paredes, controlavel)
-        self.draw(tela)
+        self.draw(tela)git

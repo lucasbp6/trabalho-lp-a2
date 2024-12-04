@@ -41,8 +41,8 @@ class Mapa:
             if len(inimigo) != 0:
                 self.npc.append(per.Inimigo(inimigo['path'],inimigo['x'],inimigo['y'],inimigo['largura'],inimigo['altura'],inimigo['vida'],inimigo['sentido']))
         
-        for coletaveis in self.dados[chave]["coletaveis"]:
-            self.coletaveis.add(coletaveis["path"],coletaveis["x"], coletaveis["y"],coletaveis["largura"],coletaveis["altura"])
+        # for coletaveis in self.dados[chave]["coletaveis"]:
+            # self.coletaveis.add(coletaveis["path"],coletaveis["x"], coletaveis["y"],coletaveis["largura"],coletaveis["altura"])
             
             
             
