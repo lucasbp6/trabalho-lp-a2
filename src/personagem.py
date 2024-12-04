@@ -123,15 +123,15 @@ class Perso_controle(Personagem):
         teclas = pygame.key.get_pressed()
         delta_x, delta_y = 0, 0
 
-        if teclas[pygame.K_d] or teclas[pygame.K_RIGHT]:
+        if teclas[pygame.K_d]:
             delta_x += 5
-        if teclas[pygame.K_a] or teclas[pygame.K_LEFT]:
+        if teclas[pygame.K_a]:
             delta_x -= 5
-        if teclas[pygame.K_w] or teclas[pygame.K_UP]:
+        if teclas[pygame.K_w]:
             delta_y -= 5
-        if teclas[pygame.K_s] or teclas[pygame.K_DOWN]:
+        if teclas[pygame.K_s]:
             delta_y += 5
-        if teclas[pygame.K_SPACE]  and self.stamina => 0:
+        if teclas[pygame.K_SPACE]  and self.stamina <= 0:
             self.tiro()
         self.movimento(delta_x, delta_y, paredes)
 
@@ -388,4 +388,4 @@ class Inimigo(Personagem):
     def update(self,tela, paredes, controlavel = None, v = False):
         self.tiros.update(tela, paredes, controlavel, v)
         self.movimento(paredes, controlavel)
-        self.draw(tela)git
+        self.draw(tela)
