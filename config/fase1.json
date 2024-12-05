@@ -1,0 +1,49 @@
+{"objetivo": 4,
+"posicao": [50,50],
+"hub":{
+	"paredes":
+[
+{"x":0,"y":0,"largura":5,"altura":600},
+{"x":0,"y":0,"largura":800,"altura":5},
+{"x":0,"y":595,"largura":800,"altura":5},
+{"x":795,"y":0,"largura":5,"altura":600},
+{"x":100,"y":0,"largura":5,"altura":100},
+{"x":200,"y":0,"largura":5,"altura":125},
+{"x":205,"y":120,"largura":200,"altura":5},
+{"x":500,"y":0,"largura":5,"altura":100},
+{"x":600,"y":0,"largura":5,"altura":100},
+{"x":600,"y":100,"largura":100,"altura":5},
+{"x":200,"y":185,"largura":50,"altura":5},
+{"x":250,"y":185,"largura":5,"altura":115},
+{"x":250,"y":300,"largura":150,"altura":5},
+{"x":400,"y":220,"largura":5,"altura":85},
+{"x":500,"y":220,"largura":5,"altura":130},
+{"x":500,"y":220,"largura":130,"altura":5},
+{"x":500,"y":295,"largura":110,"altura":5},
+{"x":550,"y":410,"largura":105,"altura":5},
+{"x":450,"y":500,"largura":200,"altura":5},
+{"x":450,"y":500,"largura":5,"altura":100},
+{"x":750,"y":550,"largura":50,"altura":5},
+{"x":365,"y":405,"largura":5,"altura":195},
+{"x":245,"y":405,"largura":125,"altura":5},
+{"x":245,"y":405,"largura":5,"altura":90},
+{"x":155,"y":540,"largura":5,"altura":60},
+{"x":0,"y":405,"largura":130,"altura":5},
+{"x":130,"y":350,"largura":5,"altura":60}],
+	"inimigos":	
+[
+{"path":"fase1/interagiveis/anu3","x":300,"y":320,"largura":40,"altura":40,"vida":10,"sentido":"x"},
+{"path":"fase1/interagiveis/anu5","x":200,"y":130,"largura":40,"altura":40,"vida":10,"sentido":"x"},
+{"path":"fase1/interagiveis/anu6","x":425,"y":425,"largura":40,"altura":40,"vida":10,"sentido":"y"},
+	{"path":"fase1/inimigos/anunciador","x":300,"y":300,"largura":40,"altura":40,"vida":3,"sentido":"seguir"},
+	{"path":"fase1/interagiveis/anu1","x":700,"y":500,"largura":40,"altura":40,"vida":10,"sentido":"y"}
+],
+	"coletaveis":[
+{"path":"../assets/fase1/interagiveis/anu8.png","x":50,"y":550,"largura": 32,"altura":32},
+{"path":"../assets/fase1/interagiveis/anu8.png","x":650,"y":50,"largura": 32,"altura":32},
+{"path":"../assets/fase1/interagiveis/anu8.png","x":250,"y":45,"largura": 32,"altura":32},
+{"path":"../assets/fase1/interagiveis/anu8.png","x":500,"y":550,"largura": 32,"altura":32}
+],
+	"portas":[]
+}
+}
