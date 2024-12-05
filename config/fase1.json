@@ -30,7 +30,8 @@
 {"x":0,"y":405,"largura":130,"altura":5},
 {"x":130,"y":350,"largura":5,"altura":60}],
 	"inimigos":	
-[	{"path":"../assets/fase1/anuncios/anu3","x":70,"y":350,"largura":40,"altura":40,"vida":3,"sentido":"aleatorio"},{"path":"../assets/fase1/anuncios/anu5","x":240,"y":330,"largura":40,"altura":40,"vida":3,"sentido":"aleatorio"},{"path":"../assets/fase1/anuncios/anu6","x":325,"y":225,"largura":40,"altura":40,"vida":3,"sentido":"aleatorio"},{"path":"../assets/fase1/anuncios/anu2","x":400,"y":650,"largura":40,"altura":40,"vida":3,"sentido":"aleatorio"}
+[
+{"path":"../assets/fase1/anuncios/anu3.png","x":300,"y":320,"largura":40,"altura":40,"vida":10,"sentido":"x"},{"path":"../assets/fase1/anuncios/anu5.png","x":200,"y":130,"largura":40,"altura":40,"vida":10,"sentido":"x"},{"path":"../assets/fase1/anuncios/anu6.png","x":425,"y":425,"largura":40,"altura":40,"vida":10,"sentido":"y"},{"path":"../assets/fase1/anuncios/anu2.png","x":300,"y":300,"largura":40,"altura":40,"vida":3,"sentido":"seguir"},{"path":"../assets/fase1/anuncios/anu1.png","x":700,"y":500,"largura":40,"altura":40,"vida":10,"sentido":"y"}
 ],
 	"coletaveis":[
 {"path":"../assets/bet.png","x":50,"y":550,"largura": 32,"altura":32},{"path":"../assets/bet.png","x":650,"y":50,"largura": 32,"altura":32},{"path":"../assets/fase1/bet.png","x":250,"y":45,"largura": 32,"altura":32},{"path":"../assets/bet.png","x":500,"y":550,"largura": 32,"altura":32}

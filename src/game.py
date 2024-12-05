@@ -12,21 +12,21 @@ FONTE = pygame.font.SysFont('arial', 30, False, False)
 FONTE2 = pygame.font.SysFont('arial', 70, False, False)
 
 
-class dead_screen:
-    def __init__(self,game):
-        self.game = game
-        self.estados = {"death": self.death,"Início": self.inicio ,
-        "Retomar":self.retomar,
-        "Sair": pygame.quit}
-        self.atual = self.estados['death']
-        self.troca = True
+# class dead_screen:
+    # def __init__(self,game):
+        # self.game = game
+        # self.estados = {"death": self.death,"Início": self.inicio ,
+        # "Retomar":self.retomar,
+        # "Sair": pygame.quit}
+        # self.atual = self.estados['death']
+        # self.troca = True
     
-    def death(self):
-        if self.troca == True:
-            self.objetos = [menu.Text("Início", FONTE,0,  275, WHITE, self.game, GREEN),menu.Text("Retomar", FONTE,0, 325, WHITE,  self.game, GREEN), menu.Text("Sair", FONTE, 0,375, WHITE, self.game, GREEN)]
-            self.troca = False
-    fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "principal", "hub.jpeg"))
-    self.game.tela.blit(fundo,(0,0))
+    # def death(self):
+        # if self.troca == True:
+            # self.objetos = [menu.Text("Início", FONTE,0,  275, WHITE, self.game, GREEN),menu.Text("Retomar", FONTE,0, 325, WHITE,  self.game, GREEN), menu.Text("Sair", FONTE, 0,375, WHITE, self.game, GREEN)]
+            # self.troca = False
+    # fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", "principal", "hub.jpeg"))
+    # self.game.tela.blit(fundo,(0,0))
 
 
 class Menu:
@@ -137,8 +137,7 @@ class Game:
         self.rodando = True
         self.estados = {
             "menu": Menu,
-            "fase": manager.Manager,
-            "morto": dead_screen
+            "fase": manager.Manager
         }
         self.atual = self.estados["menu"](self)
         self.eventos = []
@@ -150,7 +149,7 @@ class Game:
         print("seletor")
         self.atual = self.estados[fase](self)
         
-    def opçoes(self):
+    # def opçoes(self):
         
 
     #loop principal do jogo, coleta os principais eventos

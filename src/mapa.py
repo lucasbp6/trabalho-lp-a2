@@ -10,7 +10,7 @@ class Mapa:
         self.paredes = []
         self.portas = []
         self.npc = []
-        self.coletaveis = int.Coletaveis()
+        self.coletaveis = int.Coletavel()
         self.dados = None
 
     #Carrega todo o arquivo json da fase para a memoria

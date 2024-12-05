@@ -187,7 +187,7 @@ class Inimigos:
         return b
 
 class Inimigo(Personagem):
-    def __init__(self, path, x, y, largura, altura,vida,  sentido,trajetoria = None):
+    def __init__(self, path, x, y, largura, altura,vida,  sentido,trajetoria = []):
         super().__init__(path, x, y, largura, altura, vida)
         self.multiplicador = 1
         self.sentido = sentido
@@ -288,6 +288,7 @@ class Inimigo(Personagem):
         delta_x, delta_y = 0,0
         
         if self.sentido == 'x':
+            self.velocidade = 6
             delta_x = self.velocidade*self.multiplicador
             delta_y = 0
             self.rect.x += delta_x
@@ -301,20 +302,22 @@ class Inimigo(Personagem):
                     self.multiplicador = 1
                     
         if self.sentido == 'y':
+            self.velocidade = 6
             delta_y = self.velocidade*self.multiplicador
             delta_x = 0
             self.rect.y += delta_y
-            colisao_horizontal = self.colisao(paredes)
-            if colisao_horizontal:
+            colisao_vertical = self.colisao(paredes)
+            if colisao_vertical:
                 if delta_y > 0:  
-                    self.rect.bottom = colisao_horizontal.top
+                    self.rect.bottom = colisao_vertical.top
                     self.multiplicador = -1
                 elif delta_y < 0: 
-                    self.rect.top = colisao_horizontal.bottom
+                    self.rect.top = colisao_vertical.bottom
                     self.multiplicador = 1
 
     
         if self.sentido == 'seguir':
+            self.velocidade = 1.5
             multi_x, multi_y = self.delta(controlavel)
             delta_x = self.velocidade*multi_x
             delta_y = self.velocidade*multi_y
@@ -372,17 +375,7 @@ class Inimigo(Personagem):
             self.tiro(paredes, controlavel)
         if self.stamina > 0:
             self.stamina -= 1
-        
-        if self.sentido == 'caminhante':
-            i = 1
-            lenght = len(self.pontos)
-            while True:
-                self.walk_through(self.pontos[i-1],self.pontos[i])
-                if i%lenght == 0:
-                    self.pontos = self.pontos.reverse()
-                else:
-                    i +=1
-            
+                
         self.direcao(delta_x, delta_y)
 
     def update(self,tela, paredes, controlavel = None, v = False):
