@@ -1,5 +1,6 @@
 {   "objetivo": 1,
     "posicao": [400,500],
+
     "hub": {
         "paredes": [
             {"x": 0, "y": 0, "largura": 800, "altura": 5},
@@ -7,14 +8,13 @@
             {"x": 0, "y": 0, "largura": 5, "altura": 600},
             {"x": 795, "y": 0, "largura": 5, "altura": 600}
         ],
-        "portas":{
-
+        "portas": {
+            
         },
         "inimigos": [
-            {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
+            []
         ],
         "coletaveis":[
-            
         ]
     }
 }

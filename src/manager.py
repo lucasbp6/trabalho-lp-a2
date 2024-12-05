@@ -26,7 +26,7 @@ class Manager:
         }
 
         # Seletor padrao = fase1
-        self.fase = 2
+        self.fase = self.game.fase
         self.seletor = self.fases[f"fase{self.fase}"]
         self.troca = True
         self.quadro = 'hub'
@@ -39,10 +39,7 @@ class Manager:
         self.time_inicial = pygame.time.get_ticks()
         self.objetivos = False
         
-        
 
-        #ignorar --- testes
-        self.round = 1
 
     #carrega os parametros
     def load_mapa(self):
@@ -50,29 +47,40 @@ class Manager:
         #carrega todo json
         if  self.troca:
             self.seletor = self.fases[f"fase{self.fase}"]
-            print("testando o mapa")
             self.mapa.load(self.seletor)
             self.troca = False
             self.quadro = 'hub'
             self.personagem.rect.topleft = self.mapa.posicao
             self.objetivos = False
+            self.personagem.coletou = 0
+            self.time_inicial = pygame.time.get_ticks()
 
         #self.inimigos.add(boss.Boss("../assets/samyra.png",350, 50, 100,100, 1, 'boss1', ))
         #self.inimigos.add(personagem.Inimigo("../assets/samyra.png", 350, 50, 50, 50, 3, "aleatorio"))
         
         # ativa o quadro atual
         self.mapa.ativar(self.quadro)
+  
+        
 
         #carrega os inimigos
         self.inimigos.clean()
         for inimigo in self.mapa.npc:
-            self.inimigos.add(inimigo)   
+            self.inimigos.add(inimigo)  
+
         self.load = True
+        if self.fase == 3  and self.quadro == 'fim':
+            self.inimigos.add(boss.Snake("samyra", 350, 50, 100,100, 1, 1))
+        if self.fase == 4:
+            self.inimigos.add(boss.Esfinge("samyra", 350, 50, 100,100, 1))
+        if self.fase == 5:
+            self.inimigos.add(boss.Gato("samyra", 350, 50, 100,100, 1))
 
         self.coletaveis = interagiveis.Coletavel()
         for coletaveis in self.mapa.coletaveis:
             self.coletaveis.add(coletaveis[0], coletaveis[1], coletaveis[2], 50, 50)
         self.coletaveis.exibir("objetivos", (8,80), self.mapa.objetivo)
+        
             
     def fim_fase(self):
         clock = pygame.time.Clock()
@@ -84,6 +92,8 @@ class Manager:
                    ui_menu.Text(f"Tempo : {tempo}", fonte2,400,  200, (255,255,255), self.game),
                    ui_menu.Text(f"Fase {self.fase} concluida", fonte2,400,  300, (255,255,255), self.game)]
         rodando = True
+        if self.game.stats[f"fase{self.fase}"] == 0:
+            self.game.stats[f"fase{self.fase}"] = tempo
         while rodando:
             clock.tick(60)
             click_pos = None
@@ -96,6 +106,7 @@ class Manager:
 
             pos = pygame.mouse.get_pos()
             self.tela.fill((0,0,0))
+            
 
             for objeto in objetos:
                 a = objeto.update(pos, click_pos)
@@ -109,6 +120,80 @@ class Manager:
                     return False
             pygame.display.flip()
 
+    def morte(self):
+        clock = pygame.time.Clock()
+        fonte2 = pygame.font.SysFont('arial', 50, False, False)
+        tempo = self.tempo(True)
+        objetos = [ui_menu.Text("Reiniciar fase", fonte2,400,  450, (255,255,255), self.game, (0,0,150)),
+                   ui_menu.Text("Voltar ao menu", fonte2,400,  500, (255,255,255), self.game, (0,0,150)),
+                   ui_menu.Text("ihishaihihi", fonte2,400,  100, (255,255,255), self.game),
+                   ui_menu.Text(f"Voce não foi pareo", fonte2,400,  200, (255,255,255), self.game),
+                   ui_menu.Text(f"Fase {self.fase} falha", fonte2,400,  300, (255,255,255), self.game)]
+        rodando = True
+        if self.game.stats[f"fase{self.fase}"] == 0:
+            self.game.stats[f"fase{self.fase}"] = tempo
+        while rodando:
+            clock.tick(60)
+            click_pos = None
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                if evento.type == pygame.MOUSEBUTTONDOWN:
+                    click_pos = evento.pos
+
+            pos = pygame.mouse.get_pos()
+            self.tela.fill((0,0,0))
+            
+
+            for objeto in objetos:
+                a = objeto.update(pos, click_pos)
+                if a == "Reiniciar fase":
+                    self.troca = True
+                    self.personagem.vida = 5
+                    self.personagem.stamina = 40
+                    self.quadro = 'hub'
+                    return True
+                if a == "Voltar ao menu":
+                    self.game.seletor("menu")
+                    return False
+            pygame.display.flip()
+
+
+    def vitoria(self):
+        clock = pygame.time.Clock()
+        fonte2 = pygame.font.SysFont('arial', 50, False, False)
+        tempo = self.tempo(True)
+        objetos = [ui_menu.Text("Voltar ao menu", fonte2,400,  500, (255,255,255), self.game, (0,0,150)),
+                   ui_menu.Text("Parabéns, voce finalizou o jogo", fonte2,400,  50, (255,255,255), self.game),
+                   ui_menu.Text(f"bora de speedrun??", fonte2,400,  125, (255,255,255), self.game)]
+        rodando = True
+        if self.game.stats[f"fase{self.fase}"] == 0:
+            self.game.stats[f"fase{self.fase}"] = tempo
+        i = 0
+        for key, value in self.game.stats.items():
+            objetos.append(ui_menu.Text(f"{key}    {value}", fonte2,400,  200 + 50*i, (255,255,255), self.game))
+            i += 1
+        while rodando:
+            clock.tick(60)
+            click_pos = None
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                if evento.type == pygame.MOUSEBUTTONDOWN:
+                    click_pos = evento.pos
+
+            pos = pygame.mouse.get_pos()
+            self.tela.fill((0,0,0))
+            
+
+            for objeto in objetos:
+                a = objeto.update(pos, click_pos)
+                if a == "Voltar ao menu":
+                    self.game.seletor("menu")
+                    return False
+            pygame.display.flip()
     #verifica qual o proximo quadro
     def portas(self):
         x, y = self.personagem.rect.center
@@ -168,19 +253,13 @@ class Manager:
         if not self.load:
             self.load_mapa()
         self.tela.blit(self.fundo, (0,0))
-
         mortes = self.inimigos.update(self.tela, self.mapa.paredes, self.personagem, True)
         for inimigo in mortes:
-            self.mapa.dados[self.quadro]["inimigos"].remove(inimigo.inicial)
+            if isinstance(inimigo, personagem.Inimigo):
+                self.mapa.dados[self.quadro]["inimigos"].remove(inimigo.inicial)
+            if isinstance(inimigo, boss.Boss):
+                inimigo.morte(self.inimigos, self.coletaveis)
 
-        '''if self.inimigos.update(self.tela, self.mapa.paredes, self.personagem, True):
-            if self.round == 2:
-                self.inimigos.add(boss.Boss("../assets/samyra.png", 350, 50, 50,50, 1, 'boss3', ))
-                self.inimigos.add(boss.Boss("../assets/samyra.png", 350, 50, 50,50, 1, 'boss3', ))
-            if self.round == 1:
-                self.inimigos.add(boss.Boss("../assets/samyra.png", 350, 50, 70,70, 1, 'boss2', ))
-                self.inimigos.add(boss.Boss("../assets/samyra.png", 350, 50, 70,70, 1, 'boss2', ))
-                self.round = 2'''
         
         """TESTES DE EXIBICAO DE VIDA E PROGRESSO"""
         for i in range(self.personagem.vida):
@@ -211,9 +290,7 @@ class Manager:
             portal = pygame.Rect(360, 260, 80, 80)
             pygame.draw.rect(self.tela, (0,0,255), portal)
             if portal.colliderect(self.personagem.rect):
-                if self.fim_fase():
-                    self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
-                    self.load = False
+                self.vitoria()
                 return
             
 
@@ -233,14 +310,19 @@ class Manager:
             self.mapa.paredes.remove(bloqueio)
         else:
             self.personagem.update(self.tela, self.mapa.paredes , self.inimigos)
-        #print(self.personagem.vida)
-        #self.mapa.draw(self.tela)
 
+
+       
+      
         self.objetivos, coletavel = self.coletaveis.update(self.tela, self.personagem)
         #print(self.objetivos)
         if coletavel != None:
-            self.mapa.dados[self.quadro]["coletaveis"].remove({"path" :coletavel[2], "x":coletavel[1].x, "y": coletavel[1].y})
-
+            try:
+                self.mapa.dados[self.quadro]["coletaveis"].remove({"path" :coletavel[2], "x":coletavel[1].x, "y": coletavel[1].y})
+            except:
+                pass
         self.portas()
         self.tempo()
+        if self.personagem.vida <= 0:
+            self.morte()
         #print(pygame.mouse.get_pos())
