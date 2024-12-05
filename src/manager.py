@@ -267,8 +267,10 @@ class Manager:
 
         """Muito especifico para a fase 2"""
         if self.fase == 2 and self.quadro == 'hub' and self.objetivos:
+            path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets","principal", "portal.png")
+            image = pygame.transform.scale(pygame.image.load(path).convert_alpha(), (80, 80))
+            self.tela.blit(image, (360,260))
             portal = pygame.Rect(360, 260, 80, 80)
-            pygame.draw.rect(self.tela, (0,0,255), portal)
             if portal.colliderect(self.personagem.rect):
                 if self.fim_fase():
                     self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
@@ -276,8 +278,10 @@ class Manager:
                 return
         """Muito especifico para a fase 1"""
         if self.fase == 1 and self.objetivos:
+            path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets","principal", "portal.png")
+            image = pygame.transform.scale(pygame.image.load(path).convert_alpha(), (80, 80))
+            self.tela.blit(image, (360,260))
             portal = pygame.Rect(360, 260, 80, 80)
-            pygame.draw.rect(self.tela, (0,0,255), portal)
             if portal.colliderect(self.personagem.rect):
                 if self.fim_fase():
                     self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
@@ -286,8 +290,10 @@ class Manager:
 
         """Muito especifico para a fase 4"""
         if self.fase == 4 and self.quadro == 'hub' and self.objetivos:
+            path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets","principal", "portal.png")
+            image = pygame.transform.scale(pygame.image.load(path).convert_alpha(), (80, 80))
+            self.tela.blit(image, (360,260))
             portal = pygame.Rect(360, 260, 80, 80)
-            pygame.draw.rect(self.tela, (0,0,255), portal)
             if portal.colliderect(self.personagem.rect):
                 if self.fim_fase():
                     self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
@@ -296,8 +302,10 @@ class Manager:
             
         """Muito especifico para a fase 5"""
         if self.fase == 5 and self.quadro == 'hub' and self.objetivos:
+            path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets","principal", "portal.png")
+            image = pygame.transform.scale(pygame.image.load(path).convert_alpha(), (80, 80))
+            self.tela.blit(image, (360,260))
             portal = pygame.Rect(360, 260, 80, 80)
-            pygame.draw.rect(self.tela, (0,0,255), portal)
             if portal.colliderect(self.personagem.rect):
                 self.vitoria()
                 return

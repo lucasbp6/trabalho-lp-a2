@@ -154,10 +154,10 @@ class Game:
         self.path = ''
         self.fase = 1
         self.stats = {
-            "fase1": 2,
-            "fase2": 3,
-            "fase3": 4,
-            "fase4": 6,
+            "fase1": 0,
+            "fase2": 0,
+            "fase3": 0,
+            "fase4": 0,
             "fase5": 0
         }
 
