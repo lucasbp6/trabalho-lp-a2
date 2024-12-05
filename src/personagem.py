@@ -92,36 +92,29 @@ class Personagem(pygame.sprite.Sprite):
 
     #Verifica a direção do mouse em relacao ao personagem
     def direcao_mouse(self, mouse_x, mouse_y):
-    # Calcula o vetor do centro até o clique do mouse
+
         delta_x = mouse_x - self.rect.center[0]
         delta_y = mouse_y - self.rect.center[1]
-        
-        # Calcula o ângulo em relação ao eixo X (convertido para graus)
-        angulo = math.degrees(math.atan2(-delta_y, delta_x))  # Invertendo delta_y porque o eixo Y cresce para baixo no Pygame
-        if angulo < 0:
-            angulo += 360  # Ajusta ângulo para ser sempre positivo (0 a 360)
 
-        # Define os setores (cada 45° é um setor)
-        if 0 <= angulo < 22.5 or 315 <= angulo < 376.5:
-            vetor = [1, 0]  # Direita
-        elif 22.5 <= angulo < 67.5:
-            vetor = [1, -1]  # Cima-direita
-        elif 67.5 <= angulo < 112.5:
-            vetor = [0, -1]  # Cima
-        elif 112.5 <= angulo < 157.5:
-            vetor = [-1, -1]  # Cima-esquerda
-        elif 157.5 <= angulo < 202.5:
-            vetor = [-1, 0]  # Esquerda
-        elif 202.5 <= angulo < 247.5:
-            vetor = [-1, 1]  # Baixo-esquerda
-        elif 247.5 <= angulo < 292.5:
-            vetor = [0, 1]  # Baixo
-        else:
-            vetor = [1, 1]  # Baixo-direita
+        magnitude = math.sqrt(delta_x ** 2 + delta_y ** 2)
         
-        # Atualiza o vetor da classe
+        if magnitude != 0:
+            vetor = [delta_x / magnitude, delta_y / magnitude]
+        else:
+            vetor = [0, 0]
+
         self.vetor = vetor
         return vetor
+
+    def rotacionar_vetor(self, vetor, angulo):
+        angulo_rad = math.radians(angulo)
+        cos_ang = math.cos(angulo_rad)
+        sin_ang = math.sin(angulo_rad)
+
+        x_rot = vetor[0] * cos_ang - vetor[1] * sin_ang
+        y_rot = vetor[0] * sin_ang + vetor[1] * cos_ang
+
+        return x_rot, y_rot
 
     
     def update(self,tela, paredes):
@@ -148,8 +141,11 @@ class Perso_controle(Personagem):
             delta_y -= 5
         if teclas[pygame.K_s] or teclas[pygame.K_DOWN]:
             delta_y += 5
-        if teclas[pygame.K_SPACE]  and self.stamina <= 0:
+        if teclas[pygame.K_SPACE]  and self.stamina == 0:
             self.tiro()
+        if pygame.mouse.get_pressed()[0] and self.stamina == 0:  # Botão esquerdo
+            self.tiro()
+
         self.movimento(delta_x, delta_y, paredes)
 
     #caso o player tenha atirado, adiciona o tiro 
@@ -158,16 +154,26 @@ class Perso_controle(Personagem):
         #para testes
         x,y = pygame.mouse.get_pos()
         x,y = self.direcao_mouse(x,y)
-        self.tiros.add(armas.Bala(self.rect, x, y, 7))
-        self.stamina = 40
+        if self.inicial["path"] == "samyra":
+            self.tiros.add(armas.Espada(self.rect, x, y, 60))
+            self.stamina = 20
+        elif self.inicial["path"] == "gabriel":
+            self.tiros.add(armas.Pistola(self.rect, x, y, 6))
+            self.stamina = 40
+        else:
+            x_d,y_d = self.rotacionar_vetor([x,y], 3)
+            x_a,y_a = self.rotacionar_vetor([x,y], -3)
+            self.tiros.add(armas.Espingarda(self.rect, x_a, y_a, 8))
+            self.tiros.add(armas.Espingarda(self.rect, x_d, y_d, 8))
+            self.stamina = 50
   
         
     def update(self,tela, paredes, inimigos):
         self.controle(paredes)
-        self.draw(tela)
         if self.stamina > 0:
             self.stamina -= 1
         self.tiros.update(tela, paredes, inimigos)
+        self.draw(tela)
         if self.colisao_perso(inimigos) and self.imortal == 100:
             self.vida -= 1
             self.imortal = 0
