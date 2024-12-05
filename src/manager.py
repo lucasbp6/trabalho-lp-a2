@@ -110,6 +110,7 @@ class Manager:
                 a = objeto.update(pos, click_pos)
                 if a == "Proxima fase":
                     self.troca = True
+                    self.load = False
                     self.fase += 1
                     self.quadro = 'hub'
                     return True
@@ -148,6 +149,7 @@ class Manager:
                 a = objeto.update(pos, click_pos)
                 if a == "Reiniciar fase":
                     self.troca = True
+                    self.load = False
                     self.personagem.vida = 5
                     self.personagem.stamina = 40
                     self.quadro = 'hub'
@@ -272,7 +274,16 @@ class Manager:
                     self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
                     self.load = False
                 return
-            
+        """Muito especifico para a fase 1"""
+        if self.fase == 1 and self.objetivos:
+            portal = pygame.Rect(360, 260, 80, 80)
+            pygame.draw.rect(self.tela, (0,0,255), portal)
+            if portal.colliderect(self.personagem.rect):
+                if self.fim_fase():
+                    self.fundo = pygame.image.load(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"assets", f"fase{self.fase}", "mapa", f"{self.quadro}.png"))
+                    self.load = False
+                return
+
         """Muito especifico para a fase 4"""
         if self.fase == 4 and self.quadro == 'hub' and self.objetivos:
             portal = pygame.Rect(360, 260, 80, 80)
