@@ -6,8 +6,8 @@ import armas
 
 def load_sprites(path):
     frames = {
-        'esquerda' : [pygame.image.load(f"../assets/personagens/{path}/esquerda/esquerda_{i}.png") for i in range(1, 3)],
-        'direita' : [pygame.image.load(f"../assets/personagens/{path}/direita/direita_{i}.png") for i in range(1, 3)],
+        'esquerda' : [pygame.image.load(f"../assets/personagens/{path}/esquerda/esquerda_{i}.png") for i in range(1, 4)],
+        'direita' : [pygame.image.load(f"../assets/personagens/{path}/direita/direita_{i}.png") for i in range(1, 4)],
         'cima' : [pygame.image.load(f"../assets/personagens/{path}/cima/cima_{i}.png") for i in range(1, 4)],
         'baixo' : [pygame.image.load(f"../assets/personagens/{path}/baixo/baixo_{i}.png") for i in range(1, 4)]
     }
@@ -27,7 +27,7 @@ class Personagem(pygame.sprite.Sprite):
         self.vetor = (1,0)
         self.vida = vida
         self.tiros = armas.Balas()
-
+    
     def draw(self, tela):
         tela.blit(self.image, self.rect)
     
@@ -166,7 +166,13 @@ class Perso_controle(Personagem):
             self.tiros.add(armas.Espingarda(self.rect, x_a, y_a, 8))
             self.tiros.add(armas.Espingarda(self.rect, x_d, y_d, 8))
             self.stamina = 50
-  
+    
+    def dano(self):
+        if self.imortal == 50:
+            self.vida -= 1
+            self.imortal = 0
+        if self.imortal < 50:
+            self.imortal += 1
         
     def update(self,tela, paredes, inimigos):
         self.controle(paredes)
@@ -174,13 +180,8 @@ class Perso_controle(Personagem):
             self.stamina -= 1
         self.tiros.update(tela, paredes, inimigos)
         self.draw(tela)
-        if self.colisao_perso(inimigos) and self.imortal == 100:
-            self.vida -= 1
-            self.imortal = 0
-        if self.imortal < 100:
-            self.imortal += 1
-        if self.vida == 0:
-            return 'a'
+        if self.colisao_perso(inimigos):
+            self.dano()
         #print('vida:', self.vida, 'coletou:', self.coletou)
         
     
@@ -350,7 +351,13 @@ class Inimigo(Personagem):
                 elif delta_y < 0:  
                     self.rect.top = colisao_vertical.bottom  
 
-        if self.sentido == 'aleatorio':
+        if self.sentido == 'atirador':
+            if self.stamina <= 0 :  
+                self.tiro(paredes, controlavel)
+            if self.stamina > 0:
+                self.stamina -= 1
+
+        if self.sentido == 'caminhante' or self.sentido == 'atirador':
             if not hasattr(self, 'direcao_aleatoria') or self.direcao_aleatoria is None:
                 # Inicializa uma direção aleatória
                 self.direcao_aleatoria = [random.choice([-1, 0, 1]), random.choice([-1, 0, 1])]
@@ -380,26 +387,6 @@ class Inimigo(Personagem):
                 self.rect.y -= delta_y
                 self.direcao_aleatoria[1] = random.choice([-1, 0, 1])  # Gera nova direção vertical
 
-
-            if self.stamina <= 0 :  
-                self.tiro(paredes, controlavel)
-            if self.stamina > 0:
-                self.stamina -= 1
-
-        if self.sentido == 'atirador' and self.stamina <= 0:
-            self.tiro(paredes, controlavel)
-        if self.stamina > 0:
-            self.stamina -= 1
-        
-        if self.sentido == 'caminhante':
-            i = 1
-            lenght = len(self.pontos)
-            while True:
-                self.walk_through(self.pontos[i-1],self.pontos[i])
-                if i%lenght == 0:
-                    self.pontos = self.pontos.reverse()
-                else:
-                    i +=1
             
         self.direcao(delta_x, delta_y)
 
