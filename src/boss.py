@@ -390,7 +390,7 @@ class Esfinge(Boss):
                 controlavel.dano()  # Aplica o dano
 
     def morte(self, lista, coletavel):
-        coletavel.add("../assets/personagens/samyra.png", 375, 275, 50, 50)
+        coletavel.add("../assets/principal/portal.png", 375, 275, 50, 50)
 
     def update(self, tela, paredes, controlavel=None, v=False):
         self.tiros.update(tela, paredes, controlavel, v)
@@ -445,6 +445,4 @@ class Gato(Boss):
         self.draw(tela)
 
     def morte(self, lista, coletavel):
-        coletavel.add("../assets/personagens/samyra.png", 375, 275, 50, 50)
-        print('miaaaaaau')
-        
+        coletavel.add("../assets/principal/portal.png", 375, 275, 50, 50)
