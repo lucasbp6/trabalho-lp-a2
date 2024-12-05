@@ -2,17 +2,190 @@ import pygame
 import math
 import personagem
 import random
-
+import armas
 
 ''' CONTEM MUITAS COPIAS DA CLASSE INIMIGOS, PORÉM A IDEIA PRINCIPAL É SER UMA CLASSE FILHO DE INIMIGOS
     NESSA CLASSE DEVEM TER OS DIVERSOS ATAQUES QUE OS BOSSES TERÃO E SUAS LOGICAS DE MOVIMENTO
     '''
-
 class Boss(personagem.Personagem):
-    def __init__(self, path, x, y, largura, altura,vida,  sentido):
+    def __init__(self, path, x, y, largura, altura,vida):
         super().__init__(path, x, y, largura, altura, vida)
         self.multiplicador = 1
-        self.sentido = sentido
+        self.velocidade = 3
+        self.stamina = 300
+        self.movimentar = 500
+        self.raios = False
+        self.aumentar = [-200,0]
+        self.ataque = {
+    
+        }
+        self.ataque_atual = False
+
+    def linha_colide_com_paredes(self, paredes, controlavel):
+
+        linha_inicio = self.rect.center
+        linha_fim = controlavel.rect.center
+
+        for parede in paredes:
+            arestas = [
+                (parede.topleft, parede.topright),  # cima
+                (parede.topright, parede.bottomright),  # direita
+                (parede.bottomright, parede.bottomleft),  # baixo
+                (parede.bottomleft, parede.topleft),  # esquerda
+            ]
+
+            for aresta in arestas:
+                if self.linha_intersecta(linha_inicio, linha_fim, aresta[0], aresta[1]):
+                    return True
+
+        return False  
+
+    #caso a linha criada acima passe por algum objeto, o inimigo nao viu o persongame, logo nao atira
+    def linha_intersecta(self, p1, p2, q1, q2):
+
+        def orientacao(a, b, c):
+            val = (b[1] - a[1]) * (c[0] - b[0]) - (b[0] - a[0]) * (c[1] - b[1])
+            return 0 if val == 0 else (1 if val > 0 else -1)
+
+        def no_segmento(a, b, c):
+            return min(a[0], b[0]) <= c[0] <= max(a[0], b[0]) and min(a[1], b[1]) <= c[1] <= max(a[1], b[1])
+
+        o1 = orientacao(p1, p2, q1)
+        o2 = orientacao(p1, p2, q2)
+        o3 = orientacao(q1, q2, p1)
+        o4 = orientacao(q1, q2, p2)
+
+        if o1 != o2 and o3 != o4:
+            return True
+
+        if o1 == 0 and no_segmento(p1, p2, q1): return True
+        if o2 == 0 and no_segmento(p1, p2, q2): return True
+        if o3 == 0 and no_segmento(q1, q2, p1): return True
+        if o4 == 0 and no_segmento(q1, q2, p2): return True
+
+        return False
+
+    #cria um tiro para os inimigos
+    def tiro(self, paredes, controlavel):
+  
+        if self.linha_colide_com_paredes(paredes, controlavel):
+            return
+        # Calcula a direção do tiro
+        x1 = controlavel.rect.center[0] - self.rect.center[0]
+        y1 = controlavel.rect.center[1] - self.rect.center[1]
+
+        distancia = math.sqrt(x1**2 + y1**2)
+        if distancia != 0: 
+            direcao_x = x1 / distancia
+            direcao_y = y1 / distancia
+        else:
+            direcao_x, direcao_y = 0, 0  
+
+        # Adiciona a bala
+        self.tiros.add(armas.Bala(self.rect, direcao_x, direcao_y, 7))
+        self.stamina = 80
+
+
+    def movimento(self, paredes, controlavel=None):
+        if not hasattr(self, 'direcao_aleatoria') or self.direcao_aleatoria is None:
+            # Inicializa uma direção aleatória
+            self.direcao_aleatoria = [random.choice([-1, 0, 1]), random.choice([-1, 0, 1])]
+            self.timer_aleatorio = 0
+
+        # Atualiza a cada 30 ticks (ajustável)
+        self.timer_aleatorio += 1
+        if self.timer_aleatorio >= 30:
+            self.direcao_aleatoria = [random.choice([-1, 0, 1]), random.choice([-1, 0, 1])]
+            self.timer_aleatorio = 0
+
+        delta_x = self.velocidade * self.direcao_aleatoria[0]
+        delta_y = self.velocidade * self.direcao_aleatoria[1]
+
+        # Movimenta na direção aleatória
+        self.rect.x += delta_x
+        colisao_horizontal = self.colisao(paredes)
+        if colisao_horizontal or self.rect.x < 0 or self.rect.x > 780:
+            # Reverte o movimento horizontal em caso de colisão
+            self.rect.x -= delta_x
+            self.direcao_aleatoria[0] = random.choice([-1, 0, 1])  # Gera nova direção horizontal
+
+        self.rect.y += delta_y
+        colisao_vertical = self.colisao(paredes)
+        if colisao_vertical or self.rect.y < 0 or self.rect.y > 580:
+            # Reverte o movimento vertical em caso de colisão
+            self.rect.y -= delta_y
+            self.direcao_aleatoria[1] = random.choice([-1, 0, 1])  # Gera nova direção vertical
+
+
+        if self.stamina <= 0 :  
+            self.tiro(paredes, controlavel)
+        if self.stamina > 0:
+            self.stamina -= 1
+
+
+    def update(self,tela, paredes, controlavel = None, v = False):
+        self.tiros.update(tela, paredes, controlavel, v)
+        self.movimento(paredes, controlavel)
+        self.draw(tela)
+    
+        
+
+class Snake(Boss):
+    def __init__(self, path, x, y, largura, altura,vida, estagio):
+        super().__init__(path, x, y, largura, altura, vida)
+        self.multiplicador = 1
+        self.estagio = estagio
+        self.velocidade = 3
+        self.stamina = 80
+        self.movimentar = 500
+        self.raios = False
+        self.aumentar = [-200,0]
+        self.ataque = {
+        
+        }
+        self.ataque_atual = False
+    
+    def tiro(self, paredes, controlavel):
+  
+        if self.linha_colide_com_paredes(paredes, controlavel):
+            return
+        # Calcula a direção do tiro
+        x1 = controlavel.rect.center[0] - self.rect.center[0]
+        y1 = controlavel.rect.center[1] - self.rect.center[1]
+
+        distancia = math.sqrt(x1**2 + y1**2)
+        if distancia != 0: 
+            direcao_x = x1 / distancia
+            direcao_y = y1 / distancia
+        else:
+            direcao_x, direcao_y = 0, 0  
+
+        # Adiciona a bala
+        self.tiros.add(armas.Bala(self.rect, direcao_x, direcao_y, 7*(4-self.estagio)))
+        self.stamina = 80
+    
+    def update(self,tela, paredes, controlavel = None, v = False):
+        self.tiros.update(tela, paredes, controlavel, v)
+        self.movimento(paredes, controlavel)
+        self.draw(tela)
+
+    def morte(self, lista, coletavel):
+        if self.estagio == 1:
+            print('morreu estagio 1')
+            lista.add(Snake("samyra", 350, 50, 80,80, 1, 2))
+            lista.add(Snake("samyra", 350, 50, 80,80, 1, 2))
+        if self.estagio == 2:
+            print('morreu estagio 2')
+            lista.add(Snake("samyra", 350, 50, 50,50, 1, 3))
+            lista.add(Snake("samyra", 350, 50, 50,50, 1, 3))
+        if self.estagio == 3:
+            print('morreu estagio 3')
+        
+
+class Esfinge(Boss):
+    def __init__(self, path, x, y, largura, altura,vida):
+        super().__init__(path, x, y, largura, altura, vida)
+        self.multiplicador = 1
         self.velocidade = 3
         self.stamina = 300
         self.movimentar = 500
@@ -24,113 +197,43 @@ class Boss(personagem.Personagem):
             3 : self.raioss_pulsantes
         }
         self.ataque_atual = False
-
-    def delta(self, controlavel):
-        deltax = self.rect.x - controlavel.rect.x 
-        deltay = self.rect.y - controlavel.rect.y 
-        if deltax > 0:
-            x = -1
-        else:
-            x = 1
-
-        if deltay > 0:
-            y = -1
-        else:
-            y = 1
-        if deltax < self.velocidade and deltax > -self.velocidade:
-            x = 0
-        if deltay < self.velocidade and deltay > -self.velocidade:
-            y = 0
-        return x,y 
-
-    def tiro(self, controlavel):
-        x1 = controlavel.rect.center[0] - self.rect.center[0]
-        y1 = controlavel.rect.center[1] - self.rect.center[1]
-
-       
-        distancia = math.sqrt(x1**2 + y1**2)
-        if distancia != 0: 
-            direcao_x = x1 / distancia
-            direcao_y = y1 / distancia
-        else:
-            direcao_x, direcao_y = 0, 0  
-
-        self.tiros.add(personagem.Bala(self.rect, direcao_x, direcao_y, 15))
-        self.stamina = 100
-
-
-            
-
-
+    
     def movimento(self, paredes, controlavel=None):
+        if not hasattr(self, 'direcao_aleatoria') or self.direcao_aleatoria is None:
+            # Inicializa uma direção aleatória
+            self.direcao_aleatoria = [random.choice([-1, 0, 1]), random.choice([-1, 0, 1])]
+            self.timer_aleatorio = 0
 
-        if self.movimentar < 100 and self.movimentar > 0:    
-            multi_x, multi_y = self.delta(controlavel)
-            delta_x = self.velocidade*multi_x
-            delta_y = self.velocidade*multi_y 
+        # Atualiza a cada 30 ticks (ajustável)
+        self.timer_aleatorio += 1
+        if self.timer_aleatorio >= 30:
+            self.direcao_aleatoria = [random.choice([-1, 0, 1]), random.choice([-1, 0, 1])]
+            self.timer_aleatorio = 0
 
-        elif self.movimentar > 50:
-            # Inicializa as variáveis de direção e timer se ainda não existirem
-            if not hasattr(self, 'direcao_atual'):
-                self.direcao_atual = [0, 0]  # Direção inicial do boss
-            if not hasattr(self, 'timer_troca'):
-                self.timer_troca = 0  # Tempo restante para troca de direção
-            if not hasattr(self, 'direcao_alvo'):
-                self.direcao_alvo = [0, 0]  # Próxima direção do boss
+        delta_x = self.velocidade * self.direcao_aleatoria[0]
+        delta_y = self.velocidade * self.direcao_aleatoria[1]
 
-            # Reduz o timer a cada chamada
-            self.timer_troca -= 1
-            if self.timer_troca <= 0:
-                # Gera uma nova direção alvo aleatória
-                self.direcao_alvo = random.choice([(-1, 0), (1, 0), (0, -1), (0, 1)])
-                self.timer_troca = random.randint(30, 60)  # Troca de direção a cada 0.5 a 1 segundo (30-60 frames)
-
-            # Suaviza a transição entre a direção atual e a direção alvo
-                self.direcao_atual[0] += (self.direcao_alvo[0] - self.direcao_atual[0]) * 0.1
-            self.direcao_atual[1] += (self.direcao_alvo[1] - self.direcao_atual[1]) * 0.1
-
-            # Calcula o movimento baseado na direção atual
-            delta_x = self.direcao_atual[0] * 5
-            delta_y = self.direcao_atual[1] * 5
-        else:
-            self.movimentar = 500
-            delta_x, delta_y = 0,0
-        # Aplica movimento horizontal
+        # Movimenta na direção aleatória
         self.rect.x += delta_x
         colisao_horizontal = self.colisao(paredes)
-        if colisao_horizontal:
-            if delta_x > 0:  
-                self.rect.right = colisao_horizontal.left
-            elif delta_x < 0: 
-                self.rect.left = colisao_horizontal.right
+        if colisao_horizontal or self.rect.x < 0 or self.rect.x > 780:
+            # Reverte o movimento horizontal em caso de colisão
+            self.rect.x -= delta_x
+            self.direcao_aleatoria[0] = random.choice([-1, 0, 1])  # Gera nova direção horizontal
 
-        # Aplica movimento vertical
         self.rect.y += delta_y
         colisao_vertical = self.colisao(paredes)
-        if colisao_vertical:
-            if delta_y > 0:  
-                self.rect.bottom = colisao_vertical.top
-            elif delta_y < 0:  
-                self.rect.top = colisao_vertical.bottom    
-
-        # Realiza ação de tiro quando a stamina acaba
-        if (self.sentido == 'boss2' or self.sentido == 'boss3') and self.stamina <= 0:
-            self.tiro(controlavel)
-        if self.stamina > 0:
-            self.stamina -= 1
-
-        self.movimentar -= 1
-        print(self.movimentar)
-        # Atualiza a direção visual do boss
-        self.direcao(delta_x, delta_y)
+        if colisao_vertical or self.rect.y < 0 or self.rect.y > 580:
+            # Reverte o movimento vertical em caso de colisão
+            self.rect.y -= delta_y
+            self.direcao_aleatoria[1] = random.choice([-1, 0, 1])  # Gera nova direção vertical
 
 
     def raioss(self,tela):
         if self.raios == False:
             self.raios = []
-            print('daks')
             for i in range(7):
-                self.raios.append([(255,0,0), (114 + 114*i, 5), (114+114*i, 695), 1])
+                self.raios.append([(255,0,0), (114 + 114*i, 8), (114+114*i, 695), 1])
         
         for raio in self.raios:
             pygame.draw.line(tela, raio[0], raio[1], raio[2], raio[3])
@@ -145,9 +248,6 @@ class Boss(personagem.Personagem):
             self.aumentar = [-120,0]
         else:
             self.aumentar[0] += 1
-
-        print(self.aumentar)
-
 
     def raioss_rodar(self, tela):
         centro = (400, 300)  # Supondo que o centro da tela esteja em (400, 400)
@@ -166,7 +266,7 @@ class Boss(personagem.Personagem):
                     centro[0] + raio * math.cos(angulo),  # Calcula a posição X
                     centro[1] + raio * math.sin(angulo)   # Calcula a posição Y
                 )
-                self.raios.append([(255, 0, 0), centro, ponto_final, 5])
+                self.raios.append([(255, 0, 0), centro, ponto_final, 8])
 
         # Desenha os raios
         for raio in self.raios:
@@ -191,8 +291,6 @@ class Boss(personagem.Personagem):
         else:
             self.aumentar[0] += 1
 
-        print(self.aumentar)
-
     def raioss_pulsantes(self, tela):
         centro = (400, 300)  # Centro da tela (ajuste conforme necessário)
         raio_max = 700  # Distância máxima dos raios
@@ -204,7 +302,7 @@ class Boss(personagem.Personagem):
             self.expansao = True  # Define se os raios estão expandindo
             self.angulo_base = 0  # Ângulo inicial para rotação
             for i in range(7):  # 7 raios, como nos ataques anteriores
-                self.raios.append([(255, 0, 255), centro, centro, 5])  # Raios começam no centro
+                self.raios.append([(255, 0, 0), centro, centro, 8])  # Raios começam no centro
 
         # Determina o raio atual com base na expansão ou retração
         if not hasattr(self, 'raio_atual'):
@@ -237,18 +335,116 @@ class Boss(personagem.Personagem):
         # Reinicia após uma sequência completa
         if self.angulo_base >= 360:
             self.angulo_base = 0
+    
+    def linhas_intersectam(self, p1, p2, p3, p4):
+        """
+        Verifica se a linha de p1 a p2 intersecta a linha de p3 a p4.
+        """
+        def orientacao(a, b, c):
+            # Calcula a orientação de três pontos (a, b, c)
+            return (b[1] - a[1]) * (c[0] - b[0]) - (b[0] - a[0]) * (c[1] - b[1])
 
-        print(f"Raio Atual: {self.raio_atual}, Expansão: {self.expansao}, Ângulo Base: {self.angulo_base}")
+        o1 = orientacao(p1, p2, p3)
+        o2 = orientacao(p1, p2, p4)
+        o3 = orientacao(p3, p4, p1)
+        o4 = orientacao(p3, p4, p2)
 
-    def algo(self):
-        pass
+        # Caso geral: os segmentos se cruzam
+        if o1 * o2 < 0 and o3 * o4 < 0:
+            return True
 
+        return False
+
+
+    def linha_colide_com_retangulo(self, linha, ret):
+        """
+        Verifica se uma linha (definida por dois pontos) colide com um retângulo.
+        linha: ((x1, y1), (x2, y2)) -> início e fim da linha
+        ret: pygame.Rect -> retângulo
+        """
+        # Definir as bordas do retângulo como segmentos de linha
+        bordas = [
+            ((ret.left, ret.top), (ret.right, ret.top)),    # Borda superior
+            ((ret.right, ret.top), (ret.right, ret.bottom)),  # Borda direita
+            ((ret.right, ret.bottom), (ret.left, ret.bottom)),  # Borda inferior
+            ((ret.left, ret.bottom), (ret.left, ret.top))   # Borda esquerda
+        ]
+
+        # Verifica se a linha intersecta alguma borda
+        for borda in bordas:
+            if self.linhas_intersectam(linha[0], linha[1], borda[0], borda[1]):
+                return True
+
+        return False
+
+    
+
+    def verificar_dano(self, controlavel):
+        if not self.raios:
+            return
+
+        # Verifica colisão da linha (raio) com o retângulo do personagem
+        for raio in self.raios:
+            linha = (raio[1], raio[2])  # Ponto inicial e final do raio
+            if self.linha_colide_com_retangulo(linha, controlavel.rect):
+                controlavel.dano()  # Aplica o dano
+
+    def morte(self, lista, coletavel):
+        coletavel.add("../assets/personagens/samyra.png", 375, 275, 50, 50)
+
+    def update(self, tela, paredes, controlavel=None, v=False):
+        self.tiros.update(tela, paredes, controlavel, v)
+        self.movimento(paredes, controlavel)
+        self.draw(tela)
+
+        # Define o ataque atual aleatoriamente, se não houver nenhum
+        if not self.ataque_atual:
+            self.ataque_atual = self.ataque[random.randint(1, 3)]
+
+        # Executa o ataque
+        self.ataque_atual(tela)
+
+
+        # Verifica dano causado pelos raios
+        self.verificar_dano(controlavel)
+
+
+class Gato(Boss):
+    def __init__(self, path, x, y, largura, altura,vida):
+        super().__init__(path, x, y, largura, altura, vida)
+        self.multiplicador = 1
+        self.velocidade = 3
+        self.stamina = 80
+        self.movimentar = 500
+        self.raios = False
+        self.aumentar = [-200,0]
+        self.ataque_atual = False
+    
+    def tiro(self, paredes, controlavel):
+  
+        if self.linha_colide_com_paredes(paredes, controlavel):
+            return
+        # Calcula a direção do tiro
+        x1 = controlavel.rect.center[0] - self.rect.center[0]
+        y1 = controlavel.rect.center[1] - self.rect.center[1]
+
+        distancia = math.sqrt(x1**2 + y1**2)
+        if distancia != 0: 
+            direcao_x = x1 / distancia
+            direcao_y = y1 / distancia
+        else:
+            direcao_x, direcao_y = 0, 0  
+
+        # Adiciona a bala
+        self.tiros.add(armas.Git(self.rect, direcao_x, direcao_y, 7))
+        self.stamina = 60
+    
     def update(self,tela, paredes, controlavel = None, v = False):
         self.tiros.update(tela, paredes, controlavel, v)
         self.movimento(paredes, controlavel)
         self.draw(tela)
-        '''if self.ataque_atual == False:
-            self.ataque_atual = self.ataque[random.randint(1,3)]
-        self.ataque_atual(tela)'''
-        self.algo()
+
+    def morte(self, lista, coletavel):
+        coletavel.add("../assets/personagens/samyra.png", 375, 275, 50, 50)
+        print('miaaaaaau')
         

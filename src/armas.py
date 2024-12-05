@@ -9,11 +9,11 @@ class Balas:
     def colisao(self, paredes, bala, inimigos, v = False):
         rect = pygame.Rect(bala.pos[0]-bala.raio, bala.pos[1]-bala.raio, 2*bala.raio, 2*bala.raio)
         for parede in paredes:
-            if parede.colliderect(rect) :
+            if parede.colliderect(rect) and bala.raio < 50:
                 return True
         if v == True:        
             for inimigo in inimigos.inimigos:
-                if inimigo.rect.colliderect(rect):
+                if inimigo.rect.colliderect(rect) :
                     inimigo.vida -= 1
                     return True
         else:
@@ -37,11 +37,11 @@ class Balas:
         for bala in self.balas:
             if v == False:
                 bala_colisao = self.colisao(paredes, bala, inimigos, True)
-                if (bala_colisao and bala.raio < 50) or bala.update() == 0:
+                if bala_colisao or bala.update() == 0:
                     balas_remove.append(bala)
             else: 
                 bala_colisao = self.colisao(paredes, bala, inimigos)
-                if (bala_colisao and bala.raio < 50) or bala.update() == 0:
+                if bala_colisao  or bala.update() == 0:
                     balas_remove.append(bala)
         if len(balas_remove) != 0:
             for bala in balas_remove:
@@ -106,7 +106,7 @@ class Pistola:
     
 class Espada:
     def __init__(self, rect_per, d_x, d_y, raio):
-        self.contador = 10
+        self.contador = 7
         self.raio = raio
         self.per = rect_per
         self.pos = [rect_per.center[0], rect_per.center[1]]
@@ -144,4 +144,18 @@ class Espingarda:
     def update(self):
         self.contador -= 1
         self.pos = (self.pos[0] + self.sentido[0]*8, self.pos[1]+ self.sentido[1]*8)
+        return self.contador
+    
+class Git:
+    def __init__(self, rect_per, d_x, d_y, raio):
+        self.contador = 80
+        self.raio = raio
+        self.per = rect_per
+        self.pos = [rect_per.center[0], rect_per.center[1]]
+        self.sentido = (d_x, d_y)
+
+    def update(self):
+        self.contador -= 1
+        self.pos = (self.pos[0] + self.sentido[0]*8, self.pos[1]+ self.sentido[1]*8)
+        self.raio += 0.5
         return self.contador
