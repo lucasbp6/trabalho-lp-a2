@@ -1,4 +1,4 @@
-{   "objetivo": 1,
+{   "objetivo": 4,
     "posicao": [300,400],
     "hub": {
         "paredes": [
@@ -33,7 +33,7 @@
             []
         ],
         "coletaveis":[
-            {"path": "../assets/personagens/samyra.png", "x": 250, "y": 420}
+
         ]
     },
     "porta1_1": {
@@ -64,7 +64,8 @@
         "3": ["hub",[-1,7]]
     },
     "inimigos":[
-        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
+        {"path": "fase2/inimigo/virus","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"},
+        {"path": "fase2/inimigo/virus","x": 415,"y": 80,"largura": 50,"altura": 50, "vida": 2, "sentido": "caminhante"}
     ],
     "coletaveis":[
         
@@ -89,10 +90,11 @@
         "3": ["porta1_1",[-1,5]]
     },
     "inimigos":[
-        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
+        {"path": "fase2/inimigo/virus","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"},
+        {"path": "fase2/inimigo/virus","x": 415,"y": 80,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"}
     ],
     "coletaveis":[
-        {"path": "../assets/personagens/samyra.png", "x": 250, "y": 420}
+        {"path": "../assets/fase2/interagiveis/coletavel_1.png", "x": 250, "y": 420}
     ]
 },
     "porta2_1": {
@@ -114,7 +116,8 @@
         "4": ["hub",[750,-1]]
     },
     "inimigos":[
-        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
+        {"path": "fase2/inimigo/virus","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"},
+        {"path": "fase2/inimigo/virus","x": 440,"y": 430,"largura": 50,"altura": 50, "vida": 2, "sentido": "caminhante"}
     ],
     "coletaveis":[
         
@@ -134,10 +137,10 @@
         "3": ["porta2_1",[740, 50]]
     },
     "inimigos":[
-        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
+        {"path": "fase2/inimigo/virus","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"}
     ],
     "coletaveis":[
-        {"path": "../assets/personagens/samyra.png", "x": 35, "y": 70}
+        {"path": "../assets/fase2/interagiveis/coletavel_2.png", "x": 35, "y": 70}
         
     ]
 },
@@ -165,7 +168,8 @@
         "2": ["porta3_2",[5, -1]]
     },
     "inimigos":[
-        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
+        {"path": "fase2/inimigo/virus","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"},
+        {"path": "fase2/inimigo/virus","x": 630,"y": 90,"largura": 50,"altura": 50, "vida": 2, "sentido": "caminhante"}
     ],
     "coletaveis":[
 
@@ -185,10 +189,10 @@
         "4": ["porta3_1",[750, -1]]
     },
     "inimigos":[
-        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
+        {"path": "fase2/inimigo/virus","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"}
     ],
     "coletaveis":[
-        {"path": "../assets/personagens/samyra.png", "x": 530, "y": 280}
+        {"path": "../assets/fase2/interagiveis/coletavel_3.png", "x": 530, "y": 280}
     ]
 },
     "porta4_1": {
@@ -218,7 +222,8 @@
         "4": ["porta4_2",[750, -1]]
     },
     "inimigos":[
-        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
+        {"path": "fase2/inimigo/virus","x": 275,"y": 480,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"},
+        {"path": "fase2/inimigo/virus","x": 230,"y": 15,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"}
     ],
     "coletaveis":[
         
@@ -242,10 +247,10 @@
         "2": ["porta4_1",[5, -1]]
     },
     "inimigos":[
-        {"path": "samyra","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 1, "sentido": "aleatorio"}
+        {"path": "fase2/inimigo/virus","x": 100,"y": 100,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"}
     ],
     "coletaveis":[
-        {"path": "../assets/personagens/samyra.png", "x": 340, "y": 280}
+        {"path": "../assets/fase2/interagiveis/coletavel_4.png", "x": 340, "y": 280}
         
     ]
 }

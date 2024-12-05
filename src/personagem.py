@@ -17,11 +17,14 @@ class Personagem(pygame.sprite.Sprite):
     def __init__(self, path, x, y, largura, altura, vida):
         super().__init__()
         self.inicial = {"path":path,"x": x,"y": y,"largura": largura,"altura": altura, "vida":vida}
-        self.frames = load_sprites(path)
-        self.frame = self.frames['direita']
+        if isinstance(self, Perso_controle):
+            self.frames = load_sprites(path)
+            self.frame = self.frames['direita']
+            self.image = pygame.transform.scale(pygame.image.load(f"../assets/personagens/{path}.png").convert_alpha(), (largura,altura))
+        else:
+            self.image = pygame.transform.scale(pygame.image.load(f"../assets/{path}.png").convert_alpha(), (largura,altura))
         self.index = 0
         self.last_update = pygame.time.get_ticks()
-        self.image = pygame.transform.scale(pygame.image.load(f"../assets/personagens/{path}.png").convert_alpha(), (largura,altura))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.vetor = (1,0)
@@ -68,7 +71,7 @@ class Personagem(pygame.sprite.Sprite):
         self.direcao(delta_x, delta_y)
 
     #verifica a direcao em que o personagem se movimentou
-    '''SERA USADA PARA DEFINIR QUAL SPRITE SERA USADO'''
+
     def direcao(self, delta_x, delta_y):
         d = ''
         if delta_x < 0:
@@ -387,8 +390,7 @@ class Inimigo(Personagem):
                 self.rect.y -= delta_y
                 self.direcao_aleatoria[1] = random.choice([-1, 0, 1])  # Gera nova direção vertical
 
-            
-        self.direcao(delta_x, delta_y)
+    
 
     def update(self,tela, paredes, controlavel = None, v = False):
         self.tiros.update(tela, paredes, controlavel, v)

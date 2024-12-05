@@ -15,10 +15,10 @@
             "2": ["parte1", [5, -1]]
         },
         "inimigos": [
-            []
+       
         ],
         "coletaveis":[
-            {"path": "../assets/personagens/samyra.png", "x": 600, "y": 270}
+            {"path": "../assets/fase3/interagiveis/coletavel_1.png", "x": 600, "y": 270}
         ]
     },
     "parte1":{
@@ -37,10 +37,10 @@
             "4": ["hub", [745, -1]]
         },
         "inimigos": [
-            []
+            {"path": "fase3/inimigos/python_m","x": 402,"y": 90,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"}
         ],
         "coletaveis":[
-            {"path": "../assets/personagens/samyra.png", "x": 590, "y": 430}
+            {"path": "../assets/fase3/interagiveis/coletavel_1.png", "x": 590, "y": 430}
         ]
     },
     "parte2": {
@@ -54,7 +54,8 @@
             "4": ["parte1", [745, -1]]
         },
         "inimigos": [
-            []
+            {"path": "fase3/inimigos/python_m","x": 640,"y": 70,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"},
+            {"path": "fase3/inimigos/python_m","x": 70,"y": 400,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"}
         ],
         "coletaveis":[
             
@@ -73,10 +74,10 @@
             "4": ["parte2", [745, -1]]
         },
         "inimigos": [
-            []
+            {"path": "fase3/inimigos/python_m","x": 370,"y": 300,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"}
         ],
         "coletaveis":[
-            {"path": "../assets/personagens/samyra.png", "x": 700, "y": 500}
+            {"path": "../assets/fase3/interagiveis/coletavel_1.png", "x": 700, "y": 500}
         ]
     },
     "parte4": {
@@ -94,10 +95,10 @@
             "4": ["parte3", [745, -1]]
         },
         "inimigos": [
-            []
+            {"path": "fase3/inimigos/python_m","x": 40,"y": 220,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"}
         ],
         "coletaveis":[
-            {"path": "../assets/personagens/samyra.png", "x": 44, "y": 510}
+            {"path": "../assets/fase3/interagiveis/coletavel_1.png", "x": 44, "y": 510}
         ]
     },
     "parte5": {
@@ -114,7 +115,7 @@
             "4": ["parte4", [745, -1]]
         },
         "inimigos": [
-            []
+            {"path": "fase3/inimigos/python_m","x": 30,"y": 220,"largura": 50,"altura": 50, "vida": 2, "sentido": "atirador"}
         ],
         "coletaveis":[
             

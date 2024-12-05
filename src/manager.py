@@ -55,8 +55,6 @@ class Manager:
             self.personagem.coletou = 0
             self.time_inicial = pygame.time.get_ticks()
 
-        #self.inimigos.add(boss.Boss("../assets/samyra.png",350, 50, 100,100, 1, 'boss1', ))
-        #self.inimigos.add(personagem.Inimigo("../assets/samyra.png", 350, 50, 50, 50, 3, "aleatorio"))
         
         # ativa o quadro atual
         self.mapa.ativar(self.quadro)
@@ -70,11 +68,11 @@ class Manager:
 
         self.load = True
         if self.fase == 3  and self.quadro == 'fim':
-            self.inimigos.add(boss.Snake("samyra", 350, 50, 100,100, 1, 1))
+            self.inimigos.add(boss.Snake("fase3/inimigos/python_g", 350, 50, 100,100, 4, 1))
         if self.fase == 4:
-            self.inimigos.add(boss.Esfinge("samyra", 350, 50, 100,100, 1))
+            self.inimigos.add(boss.Esfinge("fase4/inimigos/sphinx", 350, 50, 100,100, 4))
         if self.fase == 5:
-            self.inimigos.add(boss.Gato("samyra", 350, 50, 100,100, 1))
+            self.inimigos.add(boss.Gato("fase5/inimigos/github", 350, 50, 100,100, 5))
 
         self.coletaveis = interagiveis.Coletavel()
         for coletaveis in self.mapa.coletaveis:
@@ -325,4 +323,4 @@ class Manager:
         self.tempo()
         if self.personagem.vida <= 0:
             self.morte()
-        #print(pygame.mouse.get_pos())
+        print(pygame.mouse.get_pos())

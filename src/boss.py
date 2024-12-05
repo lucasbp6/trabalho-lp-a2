@@ -172,12 +172,12 @@ class Snake(Boss):
     def morte(self, lista, coletavel):
         if self.estagio == 1:
             print('morreu estagio 1')
-            lista.add(Snake("samyra", 350, 50, 80,80, 1, 2))
-            lista.add(Snake("samyra", 350, 50, 80,80, 1, 2))
+            lista.add(Snake("fase3/inimigos/python_g", 350, 50, 80,80, 2, 2))
+            lista.add(Snake("fase3/inimigos/python_g", 350, 50, 80,80, 2, 2))
         if self.estagio == 2:
             print('morreu estagio 2')
-            lista.add(Snake("samyra", 350, 50, 50,50, 1, 3))
-            lista.add(Snake("samyra", 350, 50, 50,50, 1, 3))
+            lista.add(Snake("fase3/inimigos/python_m", 350, 50, 50,50, 1, 3))
+            lista.add(Snake("fase3/inimigos/python_m", 350, 50, 50,50, 1, 3))
         if self.estagio == 3:
             print('morreu estagio 3')
         
