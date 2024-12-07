@@ -11,7 +11,7 @@ A temática era usar os conteúdos aprendidos em sala de programação orientada
 Como executar o jogo
 --------------------
 
-Primeiramente, precisamos instalar as bibliotecas:
+Após clonar o repositório, precisamos instalar as bibliotecas:
 
 ```pip install requirements.txt```
 
@@ -25,7 +25,13 @@ python3 game.py
 Como executar os testes
 -----------------------
 
-Estando no repositório, precisamos dar os seguintes comando em sequência:
+Estando na branch "gabriel" do repositório:
+
+```
+git switch gabriel
+```
+
+Basta mandar os seguintes comandos em sequência:
 
 ```
 cd tests
@@ -34,9 +40,9 @@ python3 testes_in_game.py
 
 Breve Tutorial
 --------------
-O jogo é inspirados em típicos jogos de plataforma top-down, inspirado principalmente pelo jogo "Binding of ISAC"
+O jogo é inspirados em típicos jogos de plataforma top-down, inspirado principalmente pelo jogo "The Binding of Isaac"
 
-O objetivo do jogo é passar de cada uma das fases (de preferência o mais rápido possível), considerando que sua vida é mantida no passar das fases, considerando como objetivo coletar todos os coletáveis.Seu personagem é decidido no menu de seleção, e os comandos é simples: WASD para movimentações e espaço para ataque.
+O objetivo do jogo é passar de cada uma das fases (de preferência o mais rápido possível), considerando que sua vida é mantida no passar das fases, considerando como objetivo coletar todos os coletáveis.Seu personagem é decidido no menu de seleção, e os comandos é simples: WASD para movimentações e o botão direito do mouse para ataque.
 
-Inicialmente, apenas a fase 1 está disponível, e conforme o progresso no jogo elas serão desbloqueadas. Entretanto, existem códigos que permitem acessos prévios para cada fase.
+Inicialmente, apenas a fase 1 está disponível, e conforme o progresso no jogo elas serão desbloqueadas.
 
